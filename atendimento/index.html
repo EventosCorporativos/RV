@@ -572,8 +572,18 @@
  * para receber o `usuario`/`perfil` de um token validado em vez de um
  * campo "confiado" vindo do front-end (ver nota de segurança no guia).
  */
-const SAGEC_API_URL = ""; // <- cole aqui a URL do Flow A quando estiver pronta
+const SAGEC_API_URL = ""; // <- cole aqui a URL do Flow A quando o cadastro/edição pelo painel for implementado (fase futura)
 const MOCK_MODE = !SAGEC_API_URL;
+
+// Fase atual: só leitura, sem link público (o SharePoint da XP não permite
+// compartilhar "Qualquer pessoa" — só "organização" ou "pessoas específicas",
+// e o navegador do painel não tem como provar que está logado). Por isso o
+// dado chega por atualização manual: alguém baixa o eventos.json gerado pelo
+// fluxo agendado (Recorrência -> Executar script -> Criar arquivo) e sobe
+// esse arquivo aqui do lado, em dados.json, direto no repositório do GitHub
+// (mesmo processo de "editar arquivo" já usado para o index.html). O painel
+// busca esse arquivo local — mesma origem, sem CORS, sem login, sem custo.
+const SAGEC_EVENTOS_JSON_URL = "dados.json";
 
 const SagecAPI = (function () {
   const MOCK_USERS = {
@@ -765,12 +775,30 @@ const SagecAPI = (function () {
     });
   }
 
+  function listarEventos() {
+    if (SAGEC_EVENTOS_JSON_URL) {
+      return fetch(SAGEC_EVENTOS_JSON_URL, { cache: "no-store" }).then((resp) => {
+        if (!resp.ok) throw new Error("Falha ao carregar eventos publicados: HTTP " + resp.status);
+        return resp.json();
+      }).then((dados) => {
+        // a ação "Executar script" do Power Automate embrulha o retorno do
+        // script num objeto { result: [...] } — aceita os dois formatos,
+        // com ou sem esse envelope, pra não depender de mexer no fluxo.
+        if (Array.isArray(dados)) return dados;
+        if (dados && Array.isArray(dados.result)) return dados.result;
+        return [];
+      });
+    }
+    return chamar("listar");
+  }
+
   return {
     isMock: () => MOCK_MODE,
+    isSomenteLeitura: () => !!SAGEC_EVENTOS_JSON_URL,
     perfilAtual: () => perfilAtual,
     trocarPerfil: (p) => { perfilAtual = p; },
     usuarioAtual: () => MOCK_USERS[perfilAtual],
-    listar: () => chamar("listar"),
+    listar: listarEventos,
     listarAuditoria: () => chamar("listarAuditoria"),
     salvar: (payload) => chamar("salvar", payload),
     mudarEtapa: (payload) => chamar("mudarEtapa", payload),
@@ -1434,9 +1462,11 @@ const SagecAPI = (function () {
 
   // ---------- carregar eventos ----------
   function carregarEventos(){
-    document.getElementById("mockBanner").innerHTML = SagecAPI.isMock()
-      ? '⚙️ <b>Modo demonstração</b> — dados de exemplo, sem conexão real com o Excel. Configure <code>SAGEC_API_URL</code> em <code>js/api.js</code> após seguir 04_integracao/Guia_PowerAutomate.md.'
-      : '🟢 <b>Conectado</b> ao motor de dados (SAGEC_Base.xlsx via Power Automate).';
+    document.getElementById("mockBanner").innerHTML = SagecAPI.isSomenteLeitura()
+      ? '🟢 <b>Dados reais</b> — conectado à planilha (somente leitura; cadastro/edição chegam numa fase futura).'
+      : SagecAPI.isMock()
+        ? '⚙️ <b>Modo demonstração</b> — dados de exemplo, sem conexão real com o Excel. Configure <code>SAGEC_API_URL</code> em <code>js/api.js</code> após seguir 04_integracao/Guia_PowerAutomate.md.'
+        : '🟢 <b>Conectado</b> ao motor de dados (SAGEC_Base.xlsx via Power Automate).';
     return SagecAPI.listar().then(function(data){
       eventos = data;
       renderFilterRow();
