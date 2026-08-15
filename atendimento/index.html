@@ -126,8 +126,6 @@
 
   .content{padding:24px 28px 60px;display:flex;flex-direction:column;gap:28px;}
   .view-stack{display:flex;flex-direction:column;gap:28px;}
-  .banner-mock{display:flex;align-items:center;gap:10px;background:var(--paper-50);border:1px solid var(--border);border-radius:var(--radius-m);padding:10px 14px;font-size:11.5px;color:var(--ink-600);}
-  .banner-mock b{color:var(--ink-900);}
   .page-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;}
   .page-head h1{margin:0;font-size:25px;font-weight:600;letter-spacing:-.01em;}
   .page-head p{margin:4px 0 0;color:var(--ink-600);font-size:13px;}
@@ -231,6 +229,7 @@
   .sim-result .cell span{display:block;font-size:10px;color:var(--ink-600);text-transform:uppercase;letter-spacing:.03em;}
   .sim-result .cell b{font-family:var(--font-data);font-size:15px;}
   .sim-result .cell.win b{color:var(--ok-500);}
+  .sim-result .cell.lose b{color:var(--crit-500);}
   .card-preview{background:var(--paper-50);border:1px dashed var(--border);border-radius:var(--radius-m);padding:12px 14px;font-size:11.5px;line-height:1.6;font-family:var(--font-data);white-space:pre-wrap;color:var(--ink-900);}
   .conceito-txt{font-size:12px;color:var(--ink-600);line-height:1.65;margin:0;}
   .conceito-termos{font-size:11px;color:var(--ink-400);line-height:1.5;margin:8px 0 0;padding-top:8px;border-top:1px dashed var(--border);}
@@ -270,7 +269,7 @@
 </head>
 <body>
 
-<div class="app-shell" id="shell">
+<div class="app-shell collapsed" id="shell">
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <div class="brand-mark"><img src="data:image/png;base64,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" alt="XP"/></div>
@@ -294,7 +293,7 @@
     <div class="sidebar-foot">
       <div class="role-pill">
         <div class="role-avatar" id="roleAvatar">AT</div>
-        <div class="role-meta"><b id="roleName">Ana Torres</b><span id="roleTeam">Atendimento · Frontoffice</span></div>
+        <div class="role-meta"><b id="roleName">Ana Torres</b><span id="roleTeam">Atendimento</span></div>
       </div>
       <button class="collapse-btn" id="collapseBtn"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg><span class="collapse-label">Recolher menu</span></button>
     </div>
@@ -309,6 +308,7 @@
         <span class="kbd">/</span>
       </div>
       <div class="topbar-spacer"></div>
+      <div class="last-update tabular" id="lastUpdate" style="font-size:11.5px;color:var(--ink-600);white-space:nowrap;"></div>
       <div style="position:relative;">
         <button class="icon-btn" id="bellBtn" aria-label="Notificações">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
@@ -329,8 +329,6 @@
     <div class="content">
 
       <div id="viewDashboard" class="view-stack">
-        <div class="banner-mock" id="mockBanner"></div>
-
         <div class="kpi-row" id="kpiRow"></div>
 
         <div class="workspace">
@@ -350,7 +348,7 @@
                   <th data-key="statusTemporal">Status</th>
                   <th data-key="etapaProcesso">Etapa</th>
                   <th data-key="nivelRisco">Risco</th>
-                  <th data-key="precoMercado">Preço</th>
+                  <th data-key="precoEvento">Preço</th>
                   <th data-key="diasRestantes">Dias restantes</th>
                   <th data-key="documentoLink">Documento</th>
                 </tr>
@@ -361,7 +359,7 @@
             </div>
           </div>
           <div class="panel">
-            <div class="panel-head"><h2>Detalhe do evento</h2><span class="count">clique numa linha</span></div>
+            <div class="panel-head"><h2>Detalhe do evento</h2></div>
             <div class="detail-body" id="detailBody"></div>
           </div>
         </div>
@@ -414,6 +412,8 @@
               <div class="sim-box"><div class="sim-title">Leilão de Frações</div><p class="conceito-txt">Quando grupamento, desdobramento, bonificação ou incorporação deixam sobras de ações que não fecham em número inteiro na conta do cliente, a B3 reúne essas frações de todos os acionistas, forma lotes e vende em leilão no pregão. O valor apurado é rateado proporcionalmente entre os donos das frações e creditado em conta.</p><div class="conceito-termos"><b>Termos:</b> fração, rateio proporcional, preço de referência</div></div>
               <div class="sim-box"><div class="sim-title">Mudança de Ticker</div><p class="conceito-txt">Troca do código de negociação de um ativo — por reestruturação societária, incorporação, fusão ou reposicionamento de marca da empresa. Não muda a quantidade de ações, o valor investido nem os direitos do acionista; a posição é migrada automaticamente para o novo código na data definida.</p><div class="conceito-termos"><b>Termos:</b> código de negociação, fato relevante, migração automática</div></div>
               <div class="sim-box"><div class="sim-title">Encerramento de BDR</div><p class="conceito-txt">Quando o banco depositário encerra um programa de BDR (recibo negociado na B3 que representa ações de uma empresa estrangeira), o cliente tem um prazo — normalmente 30 dias — para vender o BDR no mercado ou convertê-lo na ação original negociada no exterior. Quem não se manifestar a tempo tem a posição liquidada compulsoriamente, com o valor creditado em conta.</p><div class="conceito-termos"><b>Termos:</b> programa patrocinado, agente depositário, prazo de 30 dias</div></div>
+              <div class="sim-box"><div class="sim-title">Amortização</div><p class="conceito-txt">Devolução parcial do valor investido em um FII ou título antes do vencimento, decidida pela gestora/emissor, sem extinguir a cota — reduz o valor patrimonial por cota na mesma proporção do valor amortizado. É automática, creditada em conta na data de pagamento definida; o cliente não precisa se manifestar.</p><div class="conceito-termos"><b>Termos:</b> valor patrimonial por cota, amortização de cotas, data de pagamento</div></div>
+              <div class="sim-box"><div class="sim-title">Resgate Geral</div><p class="conceito-txt">Encerramento (liquidação) total do fundo ou título, com devolução de todo o capital restante aos cotistas/investidores de uma só vez — geralmente ao final do prazo de duração do fundo, por decisão da assembleia de cotistas, ou por determinação regulatória. Também é automático: a posição é zerada e o valor é creditado na conta do cliente na data de liquidação.</p><div class="conceito-termos"><b>Termos:</b> liquidação do fundo, assembleia de cotistas, data de liquidação</div></div>
             </div>
           </div>
           <div class="panel">
@@ -455,6 +455,7 @@
             <optgroup label="Involuntários">
               <option>Grupamento</option><option>Desdobramento</option><option>Bonificacao</option>
               <option>Leilao de Fracoes</option><option>Mudanca de Ticker</option><option>Encerramento de BDR</option>
+              <option>Amortizacao</option><option>Resgate Geral</option>
             </optgroup>
             <optgroup label="Voluntários">
               <option>Subscricao</option><option>Devolucao de Direitos (BTB)</option><option>Contrato Filhote (BTC)</option>
@@ -540,10 +541,6 @@
     <div class="modal-head"><h3>Bem-vindo(a)</h3></div>
     <div class="modal-body">
       <div class="form-field"><label for="fNomeUsuario">Como podemos te chamar?</label><input id="fNomeUsuario" placeholder="Seu nome" autofocus/></div>
-      <div style="font-size:11.5px;color:var(--ink-600);line-height:1.5;">
-        Isso fica salvo só neste navegador. Quando o login único da XP (Microsoft Entra ID) estiver
-        conectado, esse passo deixa de existir e seu nome vem automaticamente da sua conta.
-      </div>
     </div>
     <div class="modal-foot"><button class="primary-btn" id="btnSalvarNome" type="button">Continuar</button></div>
   </div>
@@ -775,10 +772,20 @@ const SagecAPI = (function () {
     });
   }
 
+  // Data/hora da última atualização real dos dados. Quando o painel busca
+  // dados.json, usamos o header Last-Modified da resposta — no GitHub Pages
+  // ele reflete quando o arquivo foi de fato publicado pelo pipeline
+  // (Office Script -> Power Automate -> tarefa agendada), não só quando o
+  // navegador abriu a página. Sem esse header (ex: modo mock), cai no
+  // horário local do carregamento.
+  let ultimaAtualizacaoISO = null;
+
   function listarEventos() {
     if (SAGEC_EVENTOS_JSON_URL) {
       return fetch(SAGEC_EVENTOS_JSON_URL, { cache: "no-store" }).then((resp) => {
         if (!resp.ok) throw new Error("Falha ao carregar eventos publicados: HTTP " + resp.status);
+        const lastMod = resp.headers.get("last-modified");
+        ultimaAtualizacaoISO = lastMod ? new Date(lastMod).toISOString() : new Date().toISOString();
         return resp.json();
       }).then((dados) => {
         // a ação "Executar script" do Power Automate embrulha o retorno do
@@ -789,6 +796,7 @@ const SagecAPI = (function () {
         return [];
       });
     }
+    ultimaAtualizacaoISO = new Date().toISOString();
     return chamar("listar");
   }
 
@@ -802,6 +810,7 @@ const SagecAPI = (function () {
     listarAuditoria: () => chamar("listarAuditoria"),
     salvar: (payload) => chamar("salvar", payload),
     mudarEtapa: (payload) => chamar("mudarEtapa", payload),
+    ultimaAtualizacao: () => ultimaAtualizacaoISO,
   };
 })();
 
@@ -894,7 +903,7 @@ const SagecAPI = (function () {
     var nomeSalvo = nomeArmazenado();
     var nomeExibido = nomeSalvo || u.nome;
     document.getElementById("roleName").textContent = nomeExibido;
-    document.getElementById("roleTeam").textContent = isOps ? "Operações · Backoffice" : "Atendimento · Frontoffice";
+    document.getElementById("roleTeam").textContent = isOps ? "Operações · Backoffice" : "Atendimento";
     document.getElementById("roleAvatar").textContent = iniciais(nomeExibido);
   }
 
@@ -991,14 +1000,14 @@ const SagecAPI = (function () {
   // ---------- tabela: filtro, ordenação, colunas ----------
   var columnFilters = {};
   var COLUNAS_FILTRO = [
-    {key:"ticker", tipo:"texto", placeholder:"ticker/empresa"},
+    {key:"ticker", tipo:"nenhum"},
     {key:"tipoEvento", tipo:"select", opcoes:function(){ return Array.from(new Set(eventos.map(function(e){return e.tipoEvento;}))).sort(); }},
     {key:"fatorProporcao", tipo:"nenhum"},
     {key:"dataCom", tipo:"texto", placeholder:"dd/mm/aaaa"},
     {key:"statusTemporal", tipo:"select", opcoes:function(){ return ["Ativo","Futuro","Encerrado","Cancelado"]; }},
     {key:"etapaProcesso", tipo:"select", opcoes:function(){ return ETAPAS; }},
     {key:"nivelRisco", tipo:"select", opcoes:function(){ return ["Verde","Amarelo","Vermelho","-"]; }},
-    {key:"precoMercado", tipo:"nenhum"},
+    {key:"precoEvento", tipo:"nenhum"},
     {key:"diasRestantes", tipo:"nenhum"},
     {key:"documentoLink", tipo:"nenhum"},
   ];
@@ -1023,7 +1032,7 @@ const SagecAPI = (function () {
   function accessor(e, key){
     switch(key){
       case "nivelRisco": return RISCO_ORDEM[e.nivelRisco] || 0;
-      case "precoMercado": return e.precoMercado==null ? -1 : e.precoMercado;
+      case "precoEvento": return e.precoEvento==null ? -1 : e.precoEvento;
       case "diasRestantes": return e.diasRestantes==null ? Infinity : e.diasRestantes;
       case "documentoLink": return e.documentoLink ? 1 : 0;
       case "dataCom": return e.dataCom ? new Date(e.dataCom).getTime() : -1;
@@ -1038,12 +1047,12 @@ const SagecAPI = (function () {
     return (e[key]||"").toString().toLowerCase().indexOf(valorFiltro.toLowerCase()) !== -1;
   }
   function precoCellHtml(e){
-    if(e.precoMercado==null) return '<span class="tabular" style="color:var(--ink-400)">—</span>';
-    var txt = '<span class="tabular">R$ '+e.precoMercado.toFixed(2)+'</span>';
-    if(e.precoEvento==null || e.favorabilidade==="-") return txt;
-    if(e.favorabilidade==="Favoravel") return txt+' <span class="fav-down" title="Mais barato pelo evento do que no mercado">▼</span>';
-    if(e.favorabilidade==="Desfavoravel") return txt+' <span class="fav-up" title="Mais caro pelo evento do que no mercado">▲</span>';
-    return txt+' <span class="fav-flat" title="Próximo do preço de mercado">≈</span>';
+    if(e.precoEvento==null) return '<span class="tabular" style="color:var(--ink-400)">—</span>';
+    var txt = '<span class="tabular">R$ '+e.precoEvento.toFixed(2)+'</span>';
+    if(e.precoMercado==null || e.favorabilidade==="-") return txt;
+    if(e.favorabilidade==="Favoravel") return txt+' <span class="fav-down" title="Preço do evento abaixo da cotação de mercado">▼</span>';
+    if(e.favorabilidade==="Desfavoravel") return txt+' <span class="fav-up" title="Preço do evento acima da cotação de mercado">▲</span>';
+    return txt+' <span class="fav-flat" title="Próximo da cotação de mercado">≈</span>';
   }
   function documentoCellHtml(e){
     if(!e.documentoLink) return '<span style="color:var(--ink-400)">—</span>';
@@ -1175,11 +1184,31 @@ const SagecAPI = (function () {
   }
 
   function cardText(ev){
-    var lines = ["📌 "+ev.ticker+" — "+ev.tipoEvento,"Empresa: "+ev.empresa,"Categoria: "+ev.categoria,
+    var lines = ["📌 "+ev.ticker+" — "+ev.tipoEvento,"Empresa: "+ev.empresa,"Preço: "+fmtBRL(ev.precoEvento),
       "Data Com: "+fmtDate(ev.dataCom),"Prazo final: "+fmtDate(ev.dataLimiteFinal)+(ev.diasRestantes!=null && ev.diasRestantes>=0 ? " ("+ev.diasRestantes+" dia(s))" : ""),
+      "Data de liquidação: "+fmtDate(ev.dataPagamento),
       "Fator: "+ev.fatorProporcao];
     if(ev.observacoes) lines.push("Observação: "+ev.observacoes);
+    lines.push("Documento: "+(ev.documentoLink || "—"));
     return lines.join("\n");
+  }
+  function escHtml(s){
+    return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+  function cardHtml(ev){
+    var lines = ["📌 "+escHtml(ev.ticker)+" — "+escHtml(ev.tipoEvento),"Empresa: "+escHtml(ev.empresa),"Preço: "+escHtml(fmtBRL(ev.precoEvento)),
+      "Data Com: "+escHtml(fmtDate(ev.dataCom)),"Prazo final: "+escHtml(fmtDate(ev.dataLimiteFinal))+(ev.diasRestantes!=null && ev.diasRestantes>=0 ? " ("+ev.diasRestantes+" dia(s))" : ""),
+      "Data de liquidação: "+escHtml(fmtDate(ev.dataPagamento)),
+      "Fator: "+escHtml(ev.fatorProporcao)];
+    if(ev.observacoes) lines.push("Observação: "+escHtml(ev.observacoes));
+    lines.push(ev.documentoLink ? '<a href="'+escHtml(ev.documentoLink)+'" target="_blank" rel="noopener noreferrer">Documento</a>' : "Documento: —");
+    return lines.join("<br>");
+  }
+  function fallbackCopy(text){
+    var ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try{ document.execCommand("copy"); }catch(e){}
+    document.body.removeChild(ta);
   }
   function copyToClipboard(text){
     function done(){ toast("Resumo copiado para a área de transferência"); }
@@ -1187,11 +1216,21 @@ const SagecAPI = (function () {
       navigator.clipboard.writeText(text).then(done).catch(function(){ fallbackCopy(text); done(); });
     } else { fallbackCopy(text); done(); }
   }
-  function fallbackCopy(text){
-    var ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
-    document.body.appendChild(ta); ta.focus(); ta.select();
-    try{ document.execCommand("copy"); }catch(e){}
-    document.body.removeChild(ta);
+  function copyCardToClipboard(ev){
+    var text = cardText(ev), html = cardHtml(ev);
+    function done(){ toast("Resumo copiado para a área de transferência"); }
+    // ClipboardItem com text/html preserva o link "Documento" ao colar em
+    // Outlook/Teams; texto puro fica como fallback para quem só aceita texto
+    // (e para navegadores/ambientes sem suporte, ex: iframe do SharePoint).
+    if(navigator.clipboard && window.ClipboardItem){
+      try{
+        var item = new ClipboardItem({
+          "text/plain": new Blob([text], {type:"text/plain"}),
+          "text/html": new Blob([html], {type:"text/html"}),
+        });
+        navigator.clipboard.write([item]).then(done).catch(function(){ copyToClipboard(text); });
+      } catch(e){ copyToClipboard(text); }
+    } else { copyToClipboard(text); }
   }
 
   var ETAPAS = ["Cadastro","Validacao","Comunicacao","Processamento","Concluido","Cancelado"];
@@ -1269,7 +1308,7 @@ const SagecAPI = (function () {
         +'</div>'
       ) : "")
       + '<div class="sim-box"><div class="sim-title">💬 Card resumo para o cliente</div>'
-        +'<div class="card-preview">'+cardText(ev)+'</div>'
+        +'<div class="card-preview">'+cardHtml(ev)+'</div>'
         +'<button class="ghost-btn" id="copyCardBtn" style="margin-top:10px;width:100%;justify-content:center;">'
           +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copiar para a área de transferência</button></div>'
       + faqHtml
@@ -1280,7 +1319,7 @@ const SagecAPI = (function () {
         +'<div class="sim-field" style="flex:0 0 auto;align-self:flex-end;"><button class="primary-btn" id="btnMudarEtapa" type="button" style="white-space:nowrap;">Aplicar</button></div></div></div>'
       ) : "");
 
-    document.getElementById("copyCardBtn").addEventListener("click", function(){ copyToClipboard(cardText(ev)); });
+    document.getElementById("copyCardBtn").addEventListener("click", function(){ copyCardToClipboard(ev); });
 
     var btnEtapa = document.getElementById("btnMudarEtapa");
     if(btnEtapa){
@@ -1325,17 +1364,19 @@ const SagecAPI = (function () {
     el.innerHTML =
       '<div class="sim-row"><div class="sim-field"><label>Ações/cotas possuídas</label><input type="number" id="simQtd" value="1000" min="0"/></div>'
       +'<div class="sim-field"><label>Fator (%)</label><input type="number" id="simFator" value="'+fatorPctDefault+'" min="0"/></div></div>'
-      +'<div class="sim-result" id="simResult"></div>';
+      +'<div class="sim-result" id="simResult"></div>'
+      +'<p style="font-size:10.5px;color:var(--ink-600);margin:8px 0 0;">⏱️ A cotação de mercado usada aqui pode estar atrasada (delay) em relação ao preço real de negociação.</p>';
     var recompute = function(){
       var qtd = parseFloat(document.getElementById("simQtd").value)||0;
       var fatorPct = parseFloat(document.getElementById("simFator").value)||0;
       var novas = Math.floor(qtd * (fatorPct/100));
       var preco = ev.precoEvento || 0, mercado = ev.precoMercado || 0;
       var custo = novas*preco, economia = novas*(mercado-preco);
+      var economiaClass = economia < 0 ? "cell lose" : "cell win";
       document.getElementById("simResult").innerHTML =
         '<div class="cell"><span>Novas ações/cotas</span><b>'+novas.toLocaleString('pt-BR')+'</b></div>'
         +'<div class="cell"><span>Custo total</span><b>'+fmtBRL(custo)+'</b></div>'
-        +'<div class="cell win"><span>Economia vs. preço de tela</span><b>'+fmtBRL(economia)+'</b></div>'
+        +'<div class="'+economiaClass+'"><span>Economia vs. preço de tela</span><b>'+fmtBRL(economia)+'</b></div>'
         +'<div class="cell"><span>Preço evento / mercado</span><b>'+(preco?"R$ "+preco.toFixed(2):"—")+' / '+(mercado?"R$ "+mercado.toFixed(2):"—")+'</b></div>';
     };
     document.getElementById("simQtd").addEventListener("input", recompute);
@@ -1461,16 +1502,18 @@ const SagecAPI = (function () {
   document.getElementById("filtroManuais").addEventListener("input", renderManuais);
 
   // ---------- carregar eventos ----------
+  function fmtUltimaAtualizacao(iso){
+    if(!iso) return "";
+    var d = new Date(iso);
+    return "Atualizado "+String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")
+      +" - "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+  }
   function carregarEventos(){
-    document.getElementById("mockBanner").innerHTML = SagecAPI.isSomenteLeitura()
-      ? '🟢 <b>Dados reais</b> — conectado à planilha (somente leitura; cadastro/edição chegam numa fase futura).'
-      : SagecAPI.isMock()
-        ? '⚙️ <b>Modo demonstração</b> — dados de exemplo, sem conexão real com o Excel. Configure <code>SAGEC_API_URL</code> em <code>js/api.js</code> após seguir 04_integracao/Guia_PowerAutomate.md.'
-        : '🟢 <b>Conectado</b> ao motor de dados (SAGEC_Base.xlsx via Power Automate).';
     return SagecAPI.listar().then(function(data){
       eventos = data;
       renderFilterRow();
       renderKpis(); renderNotifs(); renderTable();
+      document.getElementById("lastUpdate").textContent = fmtUltimaAtualizacao(SagecAPI.ultimaAtualizacao());
       if(!selectedId && eventos.length) selectEvento(eventos[0].id);
       else if(selectedId) selectEvento(selectedId);
     }).catch(function(err){
@@ -1635,8 +1678,6 @@ const SagecAPI = (function () {
     }
     var sufixoPerfil = FIXED_PERFIL === "Operacoes" ? "Operações" : "Atendimento";
     document.title += " — " + sufixoPerfil;
-    var topbarTitleEl = document.querySelector(".topbar-title");
-    if(topbarTitleEl) topbarTitleEl.textContent += " · " + sufixoPerfil;
   }
 
   garantirIdentidade();
