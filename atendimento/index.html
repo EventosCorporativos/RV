@@ -853,25 +853,29 @@ const SagecAPI = (function () {
     });
   }
 
-  // Data/hora da última atualização real dos dados. Quando o painel busca
-  // dados.json, usamos o header Last-Modified da resposta — no GitHub Pages
-  // ele reflete quando o arquivo foi de fato publicado pelo pipeline
-  // (Office Script -> Power Automate -> tarefa agendada), não só quando o
-  // navegador abriu a página. Sem esse header (ex: modo mock), cai no
-  // horário local do carregamento.
+  // Data/hora da última atualização real dos dados. Vem do campo "geradoEm"
+  // gravado DENTRO do dados.json pela rotina de sincronização (sagec-sync-
+  // dados), não do header HTTP Last-Modified da resposta — confirmado ao
+  // vivo que o GitHub Pages reseta esse header no deploy do SITE inteiro
+  // (ex: quando só o código do painel é atualizado, sem nenhum dado novo),
+  // então ele não é confiável pra saber quando os EVENTOS foram atualizados.
   let ultimaAtualizacaoISO = null;
 
   function listarEventos() {
     if (SAGEC_EVENTOS_JSON_URL) {
       return fetch(SAGEC_EVENTOS_JSON_URL, { cache: "no-store" }).then((resp) => {
         if (!resp.ok) throw new Error("Falha ao carregar eventos publicados: HTTP " + resp.status);
-        const lastMod = resp.headers.get("last-modified");
-        ultimaAtualizacaoISO = lastMod ? new Date(lastMod).toISOString() : new Date().toISOString();
         return resp.json();
       }).then((dados) => {
-        // a ação "Executar script" do Power Automate embrulha o retorno do
-        // script num objeto { result: [...] } — aceita os dois formatos,
-        // com ou sem esse envelope, pra não depender de mexer no fluxo.
+        // formato atual: { geradoEm, eventos: [...] }. Mantém compatibilidade
+        // com formatos antigos (array puro, ou o envelope { result: [...] }
+        // que a ação "Executar script" do Power Automate usa) — nesses casos
+        // não há como saber a data real, então ultimaAtualizacaoISO fica null.
+        if (dados && Array.isArray(dados.eventos)) {
+          ultimaAtualizacaoISO = dados.geradoEm || null;
+          return dados.eventos;
+        }
+        ultimaAtualizacaoISO = null;
         if (Array.isArray(dados)) return dados;
         if (dados && Array.isArray(dados.result)) return dados.result;
         return [];
