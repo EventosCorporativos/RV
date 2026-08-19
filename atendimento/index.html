@@ -233,8 +233,8 @@
   .sim-result .cell.lose b{color:var(--crit-500);}
   .card-preview{background:var(--paper-50);border:1px dashed var(--border);border-radius:var(--radius-m);padding:12px 14px;font-size:11.5px;line-height:1.6;font-family:var(--font-data);white-space:pre-wrap;color:var(--ink-900);}
   .conceito-txt{font-size:12px;color:var(--ink-600);line-height:1.65;margin:0;}
-  .conceito-termos{font-size:11px;color:var(--ink-400);line-height:1.5;margin:8px 0 0;padding-top:8px;border-top:1px dashed var(--border);}
-  .conceito-termos b{color:var(--ink-600);font-weight:600;}
+  .conceito-termos{font-size:11.5px;color:var(--ink-600);line-height:1.5;margin:10px 0 0;padding-top:10px;border-top:1px dashed var(--border);display:flex;flex-direction:column;gap:6px;}
+  .conceito-termos b{color:var(--ink-900);font-weight:600;}
 
   .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy-900);color:#fff;padding:10px 18px;border-radius:11px;font-size:12.5px;font-weight:600;box-shadow:var(--shadow-2);opacity:0;pointer-events:none;transition:all .25s;display:flex;align-items:center;gap:8px;z-index:60;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
@@ -403,34 +403,126 @@
         <div class="page-head">
           <div><h1>Conceito</h1><p>O que é e como funciona cada tipo de evento corporativo</p></div>
         </div>
+        <div class="sim-box"><div class="sim-title">📅 Datas e prazos da linha do tempo</div>
+          <div class="conceito-termos">
+            <div><b>Data Com</b> — último dia em que é preciso ter o ativo em carteira para ter direito ao evento. Quem vende até esse dia perde o direito; quem compra a partir do dia seguinte (Data Ex) já compra sem ele.</div>
+            <div><b>Data Ex</b> — primeiro dia em que o ativo é negociado "ex-direito", isto é, sem o benefício do evento; normalmente o dia seguinte à Data Com, quando o preço do ativo costuma ser ajustado no pregão.</div>
+            <div><b>Início das reservas</b> — data em que abre o prazo para o cliente se manifestar (exercer, reservar, aceitar) num evento voluntário.</div>
+            <div><b>Fim / Encerramento das reservas</b> — último dia do prazo para o cliente se manifestar num evento voluntário; depois disso, o direito não exercido expira sem valor (salvo sobras, quando aplicável).</div>
+            <div><b>Data de liquidação / atualização / pagamento</b> — data em que o novo ativo ou o valor financeiro do evento é efetivamente creditado na conta/custódia do cliente.</div>
+          </div>
+        </div>
         <div class="workspace workspace-even">
           <div class="panel">
             <div class="panel-head"><h2>Eventos involuntários</h2><span class="count">automáticos, sem ação do cliente</span></div>
             <div class="detail-body">
-              <div class="sim-box"><div class="sim-title">Grupamento</div><p class="conceito-txt">Redução do número de ações/cotas em circulação pela junção de várias em uma só (ex: grupamento 10:1 transforma cada 10 papéis em 1) — o preço unitário sobe na mesma proporção, então o valor total investido não muda. É automático, aplicado na custódia na data definida pela empresa; frações que sobrarem vão a leilão na B3 e o valor é rateado.</p><div class="conceito-termos"><b>Termos:</b> fator de grupamento, inplit, leilão de frações, preço unitário</div></div>
-              <div class="sim-box"><div class="sim-title">Desdobramento</div><p class="conceito-txt">O inverso do grupamento: cada ação/cota é dividida em duas ou mais novas, o preço unitário cai na mesma proporção e o valor total investido não muda — geralmente para deixar o papel mais acessível e aumentar a liquidez. Também é automático, aplicado direto na carteira do cliente.</p><div class="conceito-termos"><b>Termos:</b> fator de desdobramento (split), liquidez, preço unitário</div></div>
-              <div class="sim-box"><div class="sim-title">Bonificação</div><p class="conceito-txt">Distribuição gratuita de novas ações/cotas aos acionistas, proporcional à posição já detida, originada da capitalização de lucros ou reservas da empresa (Lei das S.A., art. 169) — não é dinheiro, é capital que vira ação nova. O cliente não paga nada e não precisa se manifestar; frações eventuais vão a leilão.</p><div class="conceito-termos"><b>Termos:</b> capitalização de lucros/reservas, percentual de bonificação, data-base</div></div>
-              <div class="sim-box"><div class="sim-title">Leilão de Frações</div><p class="conceito-txt">Quando grupamento, desdobramento, bonificação ou incorporação deixam sobras de ações que não fecham em número inteiro na conta do cliente, a B3 reúne essas frações de todos os acionistas, forma lotes e vende em leilão no pregão. O valor apurado é rateado proporcionalmente entre os donos das frações e creditado em conta.</p><div class="conceito-termos"><b>Termos:</b> fração, rateio proporcional, preço de referência</div></div>
-              <div class="sim-box"><div class="sim-title">Mudança de Ticker</div><p class="conceito-txt">Troca do código de negociação de um ativo — por reestruturação societária, incorporação, fusão ou reposicionamento de marca da empresa. Não muda a quantidade de ações, o valor investido nem os direitos do acionista; a posição é migrada automaticamente para o novo código na data definida.</p><div class="conceito-termos"><b>Termos:</b> código de negociação, fato relevante, migração automática</div></div>
-              <div class="sim-box"><div class="sim-title">Encerramento de BDR</div><p class="conceito-txt">Quando o banco depositário encerra um programa de BDR (recibo negociado na B3 que representa ações de uma empresa estrangeira), o cliente tem um prazo — normalmente 30 dias — para vender o BDR no mercado ou convertê-lo na ação original negociada no exterior. Quem não se manifestar a tempo tem a posição liquidada compulsoriamente, com o valor creditado em conta.</p><div class="conceito-termos"><b>Termos:</b> programa patrocinado, agente depositário, prazo de 30 dias</div></div>
-              <div class="sim-box"><div class="sim-title">Amortização</div><p class="conceito-txt">Devolução parcial do valor investido em um FII ou título antes do vencimento, decidida pela gestora/emissor, sem extinguir a cota — reduz o valor patrimonial por cota na mesma proporção do valor amortizado. É automática, creditada em conta na data de pagamento definida; o cliente não precisa se manifestar.</p><div class="conceito-termos"><b>Termos:</b> valor patrimonial por cota, amortização de cotas, data de pagamento</div></div>
-              <div class="sim-box"><div class="sim-title">Resgate Geral</div><p class="conceito-txt">Encerramento (liquidação) total do fundo ou título, com devolução de todo o capital restante aos cotistas/investidores de uma só vez — geralmente ao final do prazo de duração do fundo, por decisão da assembleia de cotistas, ou por determinação regulatória. Também é automático: a posição é zerada e o valor é creditado na conta do cliente na data de liquidação.</p><div class="conceito-termos"><b>Termos:</b> liquidação do fundo, assembleia de cotistas, data de liquidação</div></div>
+              <div class="sim-box"><div class="sim-title">Grupamento</div><p class="conceito-txt">Redução do número de ações/cotas em circulação pela junção de várias em uma só (ex: grupamento 10:1 transforma cada 10 papéis em 1) — o preço unitário sobe na mesma proporção, então o valor total investido não muda. É automático, aplicado na custódia na data definida pela empresa; frações que sobrarem vão a leilão na B3 e o valor é rateado.</p><div class="conceito-termos">
+                <div><b>Fator de grupamento</b> — a proporção informada no evento (ex: "10:1") que diz quantas ações antigas formam uma nova.</div>
+                <div><b>Inplit</b> — nome de mercado (do inglês "reverse split") usado como sinônimo de grupamento.</div>
+                <div><b>Preço unitário</b> — o preço de uma única ação/cota; sobe no grupamento na mesma proporção da redução da quantidade.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Desdobramento</div><p class="conceito-txt">O inverso do grupamento: cada ação/cota é dividida em duas ou mais novas, o preço unitário cai na mesma proporção e o valor total investido não muda — geralmente para deixar o papel mais acessível e aumentar a liquidez. Também é automático, aplicado direto na carteira do cliente.</p><div class="conceito-termos">
+                <div><b>Fator de desdobramento (split)</b> — a proporção (ex: "1:2") que diz em quantas novas ações/cotas cada uma antiga se divide.</div>
+                <div><b>Liquidez</b> — facilidade de comprar/vender o ativo sem afetar muito seu preço; costuma aumentar com mais unidades em circulação e preço unitário mais baixo.</div>
+                <div><b>Preço unitário</b> — preço de uma única ação/cota; cai no desdobramento na mesma proporção do aumento da quantidade.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Bonificação</div><p class="conceito-txt">Distribuição gratuita de novas ações/cotas aos acionistas, proporcional à posição já detida, originada da capitalização de lucros ou reservas da empresa (Lei das S.A., art. 169) — não é dinheiro, é capital que vira ação nova. O cliente não paga nada e não precisa se manifestar; frações eventuais vão a leilão.</p><div class="conceito-termos">
+                <div><b>Capitalização de lucros/reservas</b> — quando a empresa transforma lucro ou reserva acumulada em capital social, emitindo ações novas em vez de distribuir dinheiro.</div>
+                <div><b>Percentual de bonificação</b> — proporção de ações novas recebidas sobre a posição já detida (ex: 10% dá 1 ação nova a cada 10 possuídas).</div>
+                <div><b>Data-base</b> — a Data Com do evento: quem tinha a ação até esse dia recebe a bonificação.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Leilão de Frações</div><p class="conceito-txt">Quando grupamento, desdobramento, bonificação ou incorporação deixam sobras de ações que não fecham em número inteiro na conta do cliente, a B3 reúne essas frações de todos os acionistas, forma lotes e vende em leilão no pregão. O valor apurado é rateado proporcionalmente entre os donos das frações e creditado em conta.</p><div class="conceito-termos">
+                <div><b>Fração</b> — a sobra de ação/cota que não fecha em número inteiro depois de um grupamento, desdobramento, bonificação ou incorporação.</div>
+                <div><b>Rateio proporcional</b> — divisão do valor apurado no leilão entre os donos das frações, respeitando o tamanho de cada fração.</div>
+                <div><b>Preço de referência</b> — preço usado como base para o leilão, geralmente a cotação do ativo no pregão.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Mudança de Ticker</div><p class="conceito-txt">Troca do código de negociação de um ativo — por reestruturação societária, incorporação, fusão ou reposicionamento de marca da empresa. Não muda a quantidade de ações, o valor investido nem os direitos do acionista; a posição é migrada automaticamente para o novo código na data definida.</p><div class="conceito-termos">
+                <div><b>Código de negociação (ticker)</b> — a sigla pela qual o ativo é identificado e negociado na B3 (ex: PETR4).</div>
+                <div><b>Fato relevante</b> — comunicado oficial obrigatório que a empresa publica na CVM/B3 informando a mudança e o motivo.</div>
+                <div><b>Migração automática</b> — a troca do código na carteira do cliente acontece sozinha, sem nenhuma ação necessária.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Encerramento de BDR</div><p class="conceito-txt">Quando o banco depositário encerra um programa de BDR (recibo negociado na B3 que representa ações de uma empresa estrangeira), o cliente tem um prazo — normalmente 30 dias — para vender o BDR no mercado ou convertê-lo na ação original negociada no exterior. Quem não se manifestar a tempo tem a posição liquidada compulsoriamente, com o valor creditado em conta.</p><div class="conceito-termos">
+                <div><b>Programa patrocinado</b> — tipo de BDR mantido pela própria empresa estrangeira (via um banco depositário), diferente do BDR não patrocinado.</div>
+                <div><b>Agente/banco depositário</b> — instituição que emite e administra o BDR no Brasil, representando as ações negociadas no exterior.</div>
+                <div><b>Prazo de 30 dias</b> — janela típica que o titular tem para vender o BDR ou convertê-lo na ação original antes do encerramento compulsório.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Amortização</div><p class="conceito-txt">Devolução parcial do valor investido em um FII ou título antes do vencimento, decidida pela gestora/emissor, sem extinguir a cota — reduz o valor patrimonial por cota na mesma proporção do valor amortizado. É automática, creditada em conta na data de pagamento definida; o cliente não precisa se manifestar.</p><div class="conceito-termos">
+                <div><b>Valor patrimonial por cota</b> — o valor total do patrimônio do fundo dividido pelo número de cotas; cai na amortização na proporção do valor devolvido.</div>
+                <div><b>Amortização de cotas</b> — devolução parcial do capital investido, sem extinguir a cota (diferente do resgate, que extingue).</div>
+                <div><b>Data de pagamento</b> — data em que o valor amortizado é creditado na conta do cliente.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Resgate Geral</div><p class="conceito-txt">Encerramento (liquidação) total do fundo ou título, com devolução de todo o capital restante aos cotistas/investidores de uma só vez — geralmente ao final do prazo de duração do fundo, por decisão da assembleia de cotistas, ou por determinação regulatória. Também é automático: a posição é zerada e o valor é creditado na conta do cliente na data de liquidação.</p><div class="conceito-termos">
+                <div><b>Liquidação do fundo</b> — encerramento definitivo do fundo/título, com venda dos ativos e devolução de todo o capital aos cotistas.</div>
+                <div><b>Assembleia de cotistas</b> — reunião em que os cotistas podem votar decisões do fundo, incluindo sua liquidação antecipada.</div>
+                <div><b>Data de liquidação</b> — data em que o valor final é creditado e a posição do cliente é zerada.</div>
+              </div></div>
             </div>
           </div>
           <div class="panel">
             <div class="panel-head"><h2>Eventos voluntários</h2><span class="count">exigem manifestação do cliente</span></div>
             <div class="detail-body">
-              <div class="sim-box"><div class="sim-title">Subscrição</div><p class="conceito-txt">Direito de preferência do acionista de comprar ações novas emitidas num aumento de capital, na proporção da posição que já tem (Lei das S.A., art. 171) — geralmente a um preço de emissão abaixo do mercado, para não diluir sua participação. Dentro do prazo (mínimo 30 dias por lei), o cliente pode exercer e pagar, vender o direito em bolsa (se negociável) ou deixá-lo expirar sem valor.</p><div class="conceito-termos"><b>Termos:</b> direito de subscrição, preço de emissão, data-base, diluição, sobras</div></div>
-              <div class="sim-box"><div class="sim-title">Devolução de Direitos (BTB)</div><p class="conceito-txt">Ocorre quando as ações do cliente estavam emprestadas (plataforma de empréstimo de ativos da B3, popularmente chamada de BTB/BTC) no momento de uma subscrição — o direito não é gerado automaticamente na conta de quem emprestou, porque quem pegou emprestado é o acionista formal na data do evento. Cabe a quem tomou emprestado devolver os direitos/recibos ao dono original dentro do prazo; se não devolver a tempo, o dono recebe o valor financeiro correspondente ou pode pedir um Contrato Filhote (item ao lado).</p><div class="conceito-termos"><b>Termos:</b> doador, tomador, empréstimo de ativos, prazo de devolução</div></div>
-              <div class="sim-box"><div class="sim-title">Contrato Filhote (BTC)</div><p class="conceito-txt">Quando quem tomou as ações emprestadas não devolve os direitos de subscrição a tempo e o dono original ainda quer exercer a subscrição (em vez de só receber o valor financeiro), é criado um novo contrato vinculado ao empréstimo original — o "contrato filhote" — garantindo que o dono receba as ações subscritas ao pagar o preço de emissão normalmente. Costuma aparecer na carteira com um código de negociação diferente do papel original.</p><div class="conceito-termos"><b>Termos:</b> contrato filhote, recibo de subscrição, sufixo de ticker</div></div>
-              <div class="sim-box"><div class="sim-title">Sobras de Subscrição</div><p class="conceito-txt">Ações/cotas que sobram depois da primeira rodada de subscrição, por falta de interesse de alguns acionistas. Numa segunda rodada, são oferecidas a quem já exerceu 100% do seu direito na primeira fase e pediu reserva adicional; se a procura for maior que a sobra, há rateio proporcional entre os interessados.</p><div class="conceito-termos"><b>Termos:</b> rateio de sobras, segunda rodada, coeficiente de sobras</div></div>
-              <div class="sim-box"><div class="sim-title">Bônus de Subscrição</div><p class="conceito-txt">Título negociável — diferente do direito de subscrição — que dá ao titular a opção (não a obrigação) de comprar ações da empresa no futuro, a um preço e prazo já definidos (Lei das S.A., arts. 75-76). Ao contrário do direito, que é automático para todo acionista, o bônus é um instrumento à parte, aprovado em assembleia, que pode ser negociado separadamente no mercado.</p><div class="conceito-termos"><b>Termos:</b> capital autorizado, assembleia geral, preço de exercício</div></div>
-              <div class="sim-box"><div class="sim-title">Oferta Prioritária</div><p class="conceito-txt">Fase de uma oferta pública (IPO ou follow-on) em que os acionistas atuais têm prioridade para reservar ações novas antes da oferta abrir ao público em geral, na proporção da posição já detida — reduz a diluição de quem já é acionista. O cliente preenche o Pedido de Reserva dentro do prazo do prospecto; se a procura exceder a quantidade reservada, também pode haver rateio.</p><div class="conceito-termos"><b>Termos:</b> pedido de reserva, período de reserva, prospecto da oferta</div></div>
-              <div class="sim-box"><div class="sim-title">IPO (Oferta Pública Inicial)</div><p class="conceito-txt">Processo pelo qual uma empresa fechada passa a ter ações negociadas na B3 pela primeira vez, com registro de companhia aberta na CVM. Pode combinar oferta primária (a empresa capta recursos emitindo ações novas) e oferta secundária (sócios atuais vendem parte da posição, sem entrada de dinheiro na empresa).</p><div class="conceito-termos"><b>Termos:</b> oferta primária, oferta secundária, prospecto, coordenador líder</div></div>
-              <div class="sim-box"><div class="sim-title">Follow On (Oferta Subsequente)</div><p class="conceito-txt">Nova oferta de ações de uma empresa que já é listada na B3 (já fez IPO), para captar mais recursos (oferta primária) e/ou permitir que acionistas relevantes vendam parte da posição (oferta secundária). Assim como o IPO, é fiscalizada pela CVM e costuma ter uma fase de oferta prioritária para quem já é acionista antes de abrir ao público.</p><div class="conceito-termos"><b>Termos:</b> oferta primária/secundária, oferta prioritária, diluição</div></div>
-              <div class="sim-box"><div class="sim-title">OPA (Oferta Pública de Aquisição)</div><p class="conceito-txt">Oferta pública para comprar as ações em circulação de uma empresa, a preço e condições iguais para todos os acionistas da mesma classe — pode ser voluntária ou obrigatória (ex: mudança de controle ou fechamento de capital). Quando envolve venda do controle, a lei garante ao minoritário com ações ordinárias o tag along: no mínimo 80% do valor pago por ação ao controlador. O cliente recebe o preço ofertado e o prazo para decidir se vende.</p><div class="conceito-termos"><b>Termos:</b> tag along, preço da OPA, adesão à oferta, cancelamento de registro</div></div>
-              <div class="sim-box"><div class="sim-title">Conversão</div><p class="conceito-txt">Troca de um ativo conversível — mais comum, uma debênture conversível — por uma quantidade determinada de ações, seguindo uma relação de conversão (paridade) já definida desde a emissão do título. É sempre opção do investidor, dentro do prazo estabelecido; quem não converter continua recebendo os rendimentos normais do título.</p><div class="conceito-termos"><b>Termos:</b> paridade de conversão, escritura de emissão, debenturista</div></div>
-              <div class="sim-box"><div class="sim-title">Dissidência</div><p class="conceito-txt">Direito de retirada do acionista que discorda de certas decisões aprovadas em assembleia — como fusão, incorporação, cisão ou mudança relevante do objeto social (Lei das S.A., art. 136). O acionista dissidente pode pedir para sair da empresa recebendo o reembolso do valor de suas ações, mas precisa se manifestar dentro do prazo legal; quem não se manifesta a tempo perde o direito ao reembolso.</p><div class="conceito-termos"><b>Termos:</b> direito de retirada (recesso), reembolso, acionista dissidente</div></div>
+              <div class="sim-box"><div class="sim-title">Subscrição</div><p class="conceito-txt">Direito de preferência do acionista de comprar ações novas emitidas num aumento de capital, na proporção da posição que já tem (Lei das S.A., art. 171) — geralmente a um preço de emissão abaixo do mercado, para não diluir sua participação. Dentro do prazo (mínimo 30 dias por lei), o cliente pode exercer e pagar, vender o direito em bolsa (se negociável) ou deixá-lo expirar sem valor.</p><div class="conceito-termos">
+                <div><b>Direito de subscrição</b> — o direito (código à parte, ex: "VALE1") que dá ao acionista a preferência de comprar as ações novas.</div>
+                <div><b>Preço de emissão</b> — o preço fixado para comprar cada ação nova na subscrição, normalmente abaixo do preço de mercado.</div>
+                <div><b>Data-base</b> — a Data Com do evento: quem tinha a ação até esse dia tem direito à subscrição.</div>
+                <div><b>Diluição</b> — redução da participação percentual de quem não exerce o direito, já que o total de ações da empresa aumenta.</div>
+                <div><b>Sobras</b> — ações não subscritas na primeira rodada, oferecidas depois a quem pediu reserva adicional.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Devolução de Direitos (BTB)</div><p class="conceito-txt">Ocorre quando as ações do cliente estavam emprestadas (plataforma de empréstimo de ativos da B3, popularmente chamada de BTB/BTC) no momento de uma subscrição — o direito não é gerado automaticamente na conta de quem emprestou, porque quem pegou emprestado é o acionista formal na data do evento. Cabe a quem tomou emprestado devolver os direitos/recibos ao dono original dentro do prazo; se não devolver a tempo, o dono recebe o valor financeiro correspondente ou pode pedir um Contrato Filhote (item ao lado).</p><div class="conceito-termos">
+                <div><b>BTB (Banco de Títulos B3)</b> — nome de mercado da plataforma de empréstimo de ativos da B3, também chamada BTC (ver card ao lado).</div>
+                <div><b>Doador</b> — quem empresta as ações na plataforma de empréstimo e é o dono original.</div>
+                <div><b>Tomador</b> — quem pega as ações emprestadas e se torna o acionista formal na data do evento.</div>
+                <div><b>Empréstimo de ativos</b> — operação em que o dono de um ativo o empresta a terceiros por um período, mediante remuneração.</div>
+                <div><b>Prazo de devolução</b> — janela que o tomador tem para devolver os direitos gerados ao doador original.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Contrato Filhote (BTC)</div><p class="conceito-txt">Quando quem tomou as ações emprestadas não devolve os direitos de subscrição a tempo e o dono original ainda quer exercer a subscrição (em vez de só receber o valor financeiro), é criado um novo contrato vinculado ao empréstimo original — o "contrato filhote" — garantindo que o dono receba as ações subscritas ao pagar o preço de emissão normalmente. Costuma aparecer na carteira com um código de negociação diferente do papel original.</p><div class="conceito-termos">
+                <div><b>BTC (Banco de Títulos CBLC)</b> — mesmo conceito de BTB, nome herdado da CBLC antes da fusão com a BM&FBovespa que formou a B3.</div>
+                <div><b>Contrato filhote</b> — novo contrato de empréstimo criado para garantir ao doador original as ações subscritas, quando o tomador não devolveu os direitos a tempo.</div>
+                <div><b>Recibo de subscrição</b> — comprovante do direito exercido, negociado até a entrega das ações definitivas.</div>
+                <div><b>Sufixo de ticker</b> — letra/número extra no código do ativo (ex: LIGT13) usado para identificar posições geradas por um evento.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Sobras de Subscrição</div><p class="conceito-txt">Ações/cotas que sobram depois da primeira rodada de subscrição, por falta de interesse de alguns acionistas. Numa segunda rodada, são oferecidas a quem já exerceu 100% do seu direito na primeira fase e pediu reserva adicional; se a procura for maior que a sobra, há rateio proporcional entre os interessados.</p><div class="conceito-termos">
+                <div><b>Rateio de sobras</b> — divisão proporcional das ações não subscritas entre quem pediu reserva adicional.</div>
+                <div><b>Segunda rodada</b> — fase seguinte à subscrição inicial, aberta só a quem já exerceu 100% do seu direito na primeira.</div>
+                <div><b>Coeficiente de sobras</b> — proporção aplicada sobre o pedido de reserva adicional de cada interessado, quando a procura excede a sobra disponível.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Bônus de Subscrição</div><p class="conceito-txt">Título negociável — diferente do direito de subscrição — que dá ao titular a opção (não a obrigação) de comprar ações da empresa no futuro, a um preço e prazo já definidos (Lei das S.A., arts. 75-76). Ao contrário do direito, que é automático para todo acionista, o bônus é um instrumento à parte, aprovado em assembleia, que pode ser negociado separadamente no mercado.</p><div class="conceito-termos">
+                <div><b>Capital autorizado</b> — limite de novas ações que a empresa pode emitir sem precisar de nova aprovação em assembleia, previsto no estatuto.</div>
+                <div><b>Assembleia geral</b> — reunião de acionistas que aprova a emissão do bônus e suas condições.</div>
+                <div><b>Preço de exercício</b> — valor fixado, já na emissão do bônus, que o titular paga se decidir comprar as ações no futuro.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Oferta Prioritária</div><p class="conceito-txt">Fase de uma oferta pública (IPO ou follow-on) em que os acionistas atuais têm prioridade para reservar ações novas antes da oferta abrir ao público em geral, na proporção da posição já detida — reduz a diluição de quem já é acionista. O cliente preenche o Pedido de Reserva dentro do prazo do prospecto; se a procura exceder a quantidade reservada, também pode haver rateio.</p><div class="conceito-termos">
+                <div><b>Pedido de reserva</b> — formulário pelo qual o acionista atual garante sua cota prioritária na oferta antes da abertura ao público.</div>
+                <div><b>Período de reserva</b> — janela de dias em que o pedido de reserva pode ser feito.</div>
+                <div><b>Prospecto da oferta</b> — documento oficial com todas as condições, riscos e prazos da oferta pública, registrado na CVM.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">IPO (Oferta Pública Inicial)</div><p class="conceito-txt">Processo pelo qual uma empresa fechada passa a ter ações negociadas na B3 pela primeira vez, com registro de companhia aberta na CVM. Pode combinar oferta primária (a empresa capta recursos emitindo ações novas) e oferta secundária (sócios atuais vendem parte da posição, sem entrada de dinheiro na empresa).</p><div class="conceito-termos">
+                <div><b>Oferta primária</b> — parte da oferta em que a empresa emite ações novas e capta recursos para si.</div>
+                <div><b>Oferta secundária</b> — parte em que sócios já existentes vendem ações que já possuíam, sem entrada de dinheiro na empresa.</div>
+                <div><b>Prospecto</b> — documento oficial com as condições da oferta, registrado na CVM.</div>
+                <div><b>Coordenador líder</b> — banco/instituição responsável por estruturar e distribuir a oferta no mercado.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Follow On (Oferta Subsequente)</div><p class="conceito-txt">Nova oferta de ações de uma empresa que já é listada na B3 (já fez IPO), para captar mais recursos (oferta primária) e/ou permitir que acionistas relevantes vendam parte da posição (oferta secundária). Assim como o IPO, é fiscalizada pela CVM e costuma ter uma fase de oferta prioritária para quem já é acionista antes de abrir ao público.</p><div class="conceito-termos">
+                <div><b>Oferta primária/secundária</b> — mesmas definições do IPO: primária capta recursos para a empresa, secundária é venda de ações por sócios já existentes.</div>
+                <div><b>Oferta prioritária</b> — fase em que acionistas atuais podem reservar ações antes da oferta abrir ao público em geral.</div>
+                <div><b>Diluição</b> — redução da participação percentual de quem não acompanha a oferta.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">OPA (Oferta Pública de Aquisição)</div><p class="conceito-txt">Oferta pública para comprar as ações em circulação de uma empresa, a preço e condições iguais para todos os acionistas da mesma classe — pode ser voluntária ou obrigatória (ex: mudança de controle ou fechamento de capital). Quando envolve venda do controle, a lei garante ao minoritário com ações ordinárias o tag along: no mínimo 80% do valor pago por ação ao controlador. O cliente recebe o preço ofertado e o prazo para decidir se vende.</p><div class="conceito-termos">
+                <div><b>Tag along</b> — direito legal do acionista minoritário com ações ordinárias de receber, numa venda de controle, no mínimo 80% do valor pago por ação ao controlador.</div>
+                <div><b>Preço da OPA</b> — valor por ação oferecido a todos os acionistas da mesma classe, igual para todos.</div>
+                <div><b>Adesão à oferta</b> — decisão do acionista de vender (ou não) suas ações nas condições da OPA.</div>
+                <div><b>Cancelamento de registro</b> — encerramento da condição de companhia aberta, que pode ser o motivo de uma OPA obrigatória.</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Conversão</div><p class="conceito-txt">Troca de um ativo conversível — mais comum, uma debênture conversível — por uma quantidade determinada de ações, seguindo uma relação de conversão (paridade) já definida desde a emissão do título. É sempre opção do investidor, dentro do prazo estabelecido; quem não converter continua recebendo os rendimentos normais do título.</p><div class="conceito-termos">
+                <div><b>Paridade de conversão</b> — proporção fixada de quantas ações cada unidade do título conversível vira, se convertido.</div>
+                <div><b>Escritura de emissão</b> — documento que define as condições do título (debênture) desde seu lançamento, incluindo a paridade de conversão.</div>
+                <div><b>Debenturista</b> — o titular de uma debênture (título de dívida emitido pela empresa).</div>
+              </div></div>
+              <div class="sim-box"><div class="sim-title">Dissidência</div><p class="conceito-txt">Direito de retirada do acionista que discorda de certas decisões aprovadas em assembleia — como fusão, incorporação, cisão ou mudança relevante do objeto social (Lei das S.A., art. 136). O acionista dissidente pode pedir para sair da empresa recebendo o reembolso do valor de suas ações, mas precisa se manifestar dentro do prazo legal; quem não se manifesta a tempo perde o direito ao reembolso.</p><div class="conceito-termos">
+                <div><b>Direito de retirada (recesso)</b> — direito legal do acionista de sair da empresa recebendo o reembolso de suas ações, quando discorda de certas decisões de assembleia.</div>
+                <div><b>Reembolso</b> — valor pago ao acionista dissidente pelas suas ações, calculado pelo valor patrimonial (ou outro critério previsto no estatuto).</div>
+                <div><b>Acionista dissidente</b> — quem votou contra ou se absteve na deliberação e exerce o direito de retirada dentro do prazo legal.</div>
+              </div></div>
             </div>
           </div>
         </div>
@@ -1130,41 +1222,34 @@ const SagecAPI = (function () {
   }
   function timelineHtml(ev){
     // paradas personalizadas por categoria — cada etapa mapeada 1:1 para uma
-    // data real do evento; quando falta, usa uma posicao padrao (fallback) e
-    // mostra "—" no lugar da data
+    // data real do evento; posicao visual de cada parada e sempre um
+    // espaçamento fixo e igual entre elas (datas proximas no calendario nao
+    // devem ficar visualmente coladas)
     var stops = ev.categoria === "Involuntario" ? [
-      {label:"Data Com", date: ev.dataCom, fallback:0.15},
-      {label:"Data Ex", date: addDias(ev.dataCom, 1), fallback:0.5},
-      {label:"Data de atualização", date: ev.dataPagamento, fallback:0.85},
+      {label:"Data Com", date: ev.dataCom},
+      {label:"Data Ex", date: addDias(ev.dataCom, 1)},
+      {label:"Data de atualização", date: ev.dataPagamento},
     ] : [
-      {label:"Data Com", date: ev.dataCom, fallback:0.08},
-      {label:"Início reservas", date: ev.dataInicioPrazo, fallback:0.34},
-      {label:"Fim", date: ev.dataLimiteFinal, fallback:0.64},
-      {label:"Data de liquidação", date: ev.dataPagamento, fallback:0.92},
+      {label:"Data Com", date: ev.dataCom},
+      {label:"Início reservas", date: ev.dataInicioPrazo},
+      {label:"Fim", date: ev.dataLimiteFinal},
+      {label:"Data de liquidação", date: ev.dataPagamento},
     ];
-    var datas = stops.map(function(s){ return s.date ? new Date(s.date+"T00:00:00") : null; });
-    var validas = datas.filter(function(d){ return d; });
-    var start, end;
-    if(validas.length){
-      start = new Date(Math.min.apply(null, validas)); start.setDate(start.getDate()-6);
-      end = new Date(Math.max.apply(null, validas)); end.setDate(end.getDate()+6);
-    } else {
-      start = new Date(TODAY); start.setDate(start.getDate()-14);
-      end = new Date(TODAY); end.setDate(end.getDate()+14);
-    }
-    var span = Math.max(1, end - start);
-    var todayPct = Math.max(0, Math.min(1, (TODAY-start)/span));
-    var html = '<div class="timeline-track"><div class="timeline-fill" style="width:'+(todayPct*100)+'%"></div>';
-    // posicoes reais (data verdadeira) so servem para saber se a etapa ja
-    // passou ("done"); a posicao visual de cada parada e sempre um
-    // espaçamento fixo e igual entre elas, do inicio ao fim da barra —
-    // datas proximas no calendario nao devem ficar visualmente coladas
     var n = stops.length;
+    var datas = stops.map(function(s){ return s.date ? new Date(s.date+"T00:00:00") : null; });
+    // "done" e puramente se a data daquela etapa ja chegou (comparado a
+    // TODAY) — nao a proporcao de tempo decorrido num calendario. A barra
+    // preenchida avanca em degraus, ate a ultima etapa com data ja vencida;
+    // uma etapa sem data conhecida nunca conta como concluida.
+    var doneFlags = datas.map(function(d){ return !!(d && d <= TODAY); });
+    var ultimoConcluidoIdx = -1;
+    doneFlags.forEach(function(done, i){ if(done) ultimoConcluidoIdx = i; });
+    var fillPct = ultimoConcluidoIdx >= 0 ? ((ultimoConcluidoIdx+1)/(n+1))*100 : 0;
+
+    var html = '<div class="timeline-track"><div class="timeline-fill" style="width:'+fillPct+'%"></div>';
     stops.forEach(function(s,i){
       var pctVisual = ((i+1)/(n+1))*100;
-      var pctReal = datas[i] ? Math.max(0, Math.min(1, (datas[i]-start)/span))*100 : s.fallback*100;
-      var done = (pctReal/100) <= todayPct;
-      html += '<div class="timeline-stop '+(done?"done":"")+'" style="left:'+pctVisual+'%"></div>';
+      html += '<div class="timeline-stop '+(doneFlags[i]?"done":"")+'" style="left:'+pctVisual+'%"></div>';
       html += '<div class="timeline-date-above" style="left:'+pctVisual+'%">'+(s.date?fmtDateAbrev(s.date):'<span style="opacity:.4">—</span>')+'</div>';
       html += '<div class="timeline-label" style="left:'+pctVisual+'%">'+s.label+'</div>';
     });
@@ -1228,7 +1313,12 @@ const SagecAPI = (function () {
     return /oferta|ipo|follow on|^opa$/i.test(tipoEvento || "");
   }
   function temCalculadora(ev){
-    return ev.precoEvento != null || ["Grupamento","Desdobramento","Bonificacao","Subscricao","Bonus de Subscricao","Sobras de Subscricao"].indexOf(ev.tipoEvento) >= 0;
+    // O Simulador aparece se der pra calcular qualquer uma das duas
+    // calculadoras — preço definido (Financeiro) ou fator numérico
+    // computável (Posição/Direitos) — independente do status/etapa do
+    // evento (um evento Encerrado continua mostrando o simulador
+    // normalmente, contanto que tenha preço ou fator cadastrado).
+    return ev.precoEvento != null || parseFatorMultiplicador(ev.fatorProporcao) != null;
   }
   function simNaoLabel(v){ return v==="Sim" ? "Sim" : v==="Nao" ? "Não" : "-"; }
 
