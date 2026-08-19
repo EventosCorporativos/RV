@@ -347,11 +347,11 @@
                   <th data-key="fatorProporcao">Fator</th>
                   <th data-key="dataCom">Data Com</th>
                   <th data-key="statusTemporal">Status</th>
-                  <th data-key="etapaProcesso">Etapa</th>
-                  <th data-key="nivelRisco">Risco</th>
                   <th data-key="precoEvento">Preço</th>
                   <th data-key="diasRestantes">Dias restantes</th>
                   <th data-key="documentoLink">Documento</th>
+                  <th data-key="etapaProcesso">Etapa</th>
+                  <th data-key="nivelRisco">Risco</th>
                 </tr>
                 <tr class="filter-row" id="filterRow"></tr>
                 </thead>
@@ -1090,11 +1090,11 @@ const SagecAPI = (function () {
     {key:"fatorProporcao", tipo:"nenhum"},
     {key:"dataCom", tipo:"texto", placeholder:"dd/mm/aaaa"},
     {key:"statusTemporal", tipo:"select", opcoes:function(){ return ["Ativo","Futuro","Encerrado","Cancelado"]; }},
-    {key:"etapaProcesso", tipo:"select", opcoes:function(){ return ETAPAS; }},
-    {key:"nivelRisco", tipo:"select", opcoes:function(){ return ["Verde","Amarelo","Vermelho","-"]; }},
     {key:"precoEvento", tipo:"nenhum"},
     {key:"diasRestantes", tipo:"nenhum"},
     {key:"documentoLink", tipo:"nenhum"},
+    {key:"etapaProcesso", tipo:"select", opcoes:function(){ return ETAPAS; }},
+    {key:"nivelRisco", tipo:"select", opcoes:function(){ return ["Verde","Amarelo","Vermelho","-"]; }},
   ];
   function renderFilterRow(){
     var tr = document.getElementById("filterRow");
@@ -1179,11 +1179,12 @@ const SagecAPI = (function () {
         +'<td>'+e.tipoEvento+'</td>'
         +'<td>'+(e.fatorProporcao||"—")+'</td>'
         +'<td class="tabular">'+fmtDate(e.dataCom)+'</td>'
-        +'<td>'+statusPill(e.statusTemporal)+'</td><td>'+etapaPill(e.etapaProcesso)+'</td>'
-        +'<td><span class="risk-dot" style="background:'+RISK_COLOR[e.nivelRisco]+'"></span></td>'
+        +'<td>'+statusPill(e.statusTemporal)+'</td>'
         +'<td>'+precoCellHtml(e)+'</td>'
         +'<td class="tabular">'+diasTxt+'</td>'
-        +'<td>'+documentoCellHtml(e)+'</td></tr>';
+        +'<td>'+documentoCellHtml(e)+'</td>'
+        +'<td>'+etapaPill(e.etapaProcesso)+'</td>'
+        +'<td><span class="risk-dot" style="background:'+RISK_COLOR[e.nivelRisco]+'"></span></td></tr>';
     }).join("");
     Array.prototype.forEach.call(tbody.querySelectorAll("tr[data-id]"), function(tr){
       tr.addEventListener("click", function(){ selectEvento(parseInt(tr.getAttribute("data-id"),10)); });
@@ -1262,10 +1263,9 @@ const SagecAPI = (function () {
   }
 
   function cardText(ev){
-    var lines = ["📌 "+ev.ticker+" — "+ev.tipoEvento,"Empresa: "+ev.empresa,"Preço: "+fmtBRL(ev.precoEvento),
+    var lines = [ev.ticker+" — "+ev.tipoEvento,"Empresa: "+ev.empresa,"Fator: "+ev.fatorProporcao,"Preço: "+fmtBRL(ev.precoEvento),
       "Data Com: "+fmtDate(ev.dataCom),"Prazo final: "+fmtDate(ev.dataLimiteFinal)+(ev.diasRestantes!=null && ev.diasRestantes>=0 ? " ("+ev.diasRestantes+" dia(s))" : ""),
-      "Data de liquidação: "+fmtDate(ev.dataPagamento),
-      "Fator: "+ev.fatorProporcao];
+      "Data de liquidação: "+fmtDate(ev.dataPagamento)];
     if(ev.observacoes) lines.push("Observação: "+ev.observacoes);
     lines.push("Documento: "+(ev.documentoLink || "—"));
     return lines.join("\n");
@@ -1274,10 +1274,9 @@ const SagecAPI = (function () {
     return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   }
   function cardHtml(ev){
-    var lines = ["📌 "+escHtml(ev.ticker)+" — "+escHtml(ev.tipoEvento),"Empresa: "+escHtml(ev.empresa),"Preço: "+escHtml(fmtBRL(ev.precoEvento)),
+    var lines = [escHtml(ev.ticker)+" — "+escHtml(ev.tipoEvento),"Empresa: "+escHtml(ev.empresa),"Fator: "+escHtml(ev.fatorProporcao),"Preço: "+escHtml(fmtBRL(ev.precoEvento)),
       "Data Com: "+escHtml(fmtDate(ev.dataCom)),"Prazo final: "+escHtml(fmtDate(ev.dataLimiteFinal))+(ev.diasRestantes!=null && ev.diasRestantes>=0 ? " ("+ev.diasRestantes+" dia(s))" : ""),
-      "Data de liquidação: "+escHtml(fmtDate(ev.dataPagamento)),
-      "Fator: "+escHtml(ev.fatorProporcao)];
+      "Data de liquidação: "+escHtml(fmtDate(ev.dataPagamento))];
     if(ev.observacoes) lines.push("Observação: "+escHtml(ev.observacoes));
     lines.push(ev.documentoLink ? '<a href="'+escHtml(ev.documentoLink)+'" target="_blank" rel="noopener noreferrer">Documento</a>' : "Documento: —");
     return lines.join("<br>");
