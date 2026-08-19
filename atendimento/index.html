@@ -790,9 +790,7 @@ const SagecAPI = (function () {
     return new Promise((resolve) => {
       setTimeout(() => {
         if (acao === "listar") {
-          const dados = MOCK_EVENTOS.map(calcularDerivados).map((e) =>
-            perfilAtual === "Atendimento" ? { ...e, observacoes: "" } : e
-          );
+          const dados = MOCK_EVENTOS.map(calcularDerivados);
           resolve(dados);
         } else if (acao === "listarAuditoria") {
           resolve(MOCK_AUDITORIA.slice().sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1)));
@@ -1377,6 +1375,7 @@ const SagecAPI = (function () {
         +'<div><span>Preço do evento</span><b class="tabular">'+fmtBRL(ev.precoEvento)+'</b></div>'
         +'<div><span>Documento</span><b>'+(ev.documentoLink ? '<a class="doc-link" href="'+ev.documentoLink+'" target="_blank" rel="noopener noreferrer">Abrir ↗</a>' : "—")+'</b></div>'
         + camposExtras
+        + (ev.observacoes ? '<div style="grid-column:1/-1;"><span>Observações</span><b style="font-family:var(--font-ui);font-weight:400;">'+ev.observacoes+'</b></div>' : '')
       +'</div>'
       + timelineHtml(ev)
       + (temCalculadora(ev) ? (
