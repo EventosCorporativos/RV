@@ -162,11 +162,12 @@
   .carteira-remove{background:var(--crit-bg);color:var(--crit-500);border:none;border-radius:8px;height:34px;cursor:pointer;flex:0 0 auto;padding:0 10px;}
 
   .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
-  .kpi-card{background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));border-radius:var(--radius-l);padding:16px 18px;box-shadow:var(--shadow-1);}
-  .kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-600);display:flex;align-items:center;justify-content:space-between;}
-  .kpi-value{font-family:var(--font-data);font-size:28px;font-weight:600;margin-top:6px;letter-spacing:-.01em;}
-  .kpi-sub{font-size:11.5px;color:var(--ink-600);margin-top:3px;}
-  .kpi-dot{width:8px;height:8px;border-radius:50%;}
+  .kpi-card{background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));border-radius:var(--radius-l);padding:12px 18px;box-shadow:var(--shadow-1);display:flex;align-items:center;justify-content:space-between;gap:14px;}
+  .kpi-left{min-width:0;}
+  .kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-600);display:flex;align-items:center;gap:6px;white-space:nowrap;}
+  .kpi-value{font-family:var(--font-data);font-size:26px;font-weight:600;letter-spacing:-.01em;text-align:right;flex:0 0 auto;}
+  .kpi-sub{font-size:11.5px;color:var(--ink-600);margin-top:3px;white-space:nowrap;}
+  .kpi-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;}
 
   .workspace{display:grid;grid-template-columns:1.55fr 1fr;gap:22px;align-items:start;}
   .workspace.workspace-even{grid-template-columns:1fr 1fr;}
@@ -504,18 +505,6 @@
           </div>
           <div class="form-field full"><label for="fInfoRateio">Informação de rateio (ofertas)</label><textarea id="fInfoRateio" placeholder="Ex: Rateio proporcional às reservas não atendidas..."></textarea></div>
           <div class="form-row">
-            <div class="form-field"><label for="fFatorDe">Fator — de (unidades antigas)</label><input id="fFatorDe" type="number" min="0" step="1" placeholder="Ex: 10"/></div>
-            <div class="form-field"><label for="fFatorPara">Fator — para (unidades novas)</label><input id="fFatorPara" type="number" min="0" step="1" placeholder="Ex: 1"/></div>
-          </div>
-          <div class="form-field">
-            <label for="fFatorAplicacao">O resultado do fator...</label>
-            <select id="fFatorAplicacao">
-              <option value="">— não informado —</option>
-              <option value="Substitui">Substitui a posição (grupamento/desdobramento)</option>
-              <option value="Adiciona">Adiciona à posição (bonificação/subscrição)</option>
-            </select>
-          </div>
-          <div class="form-row">
             <div class="form-field"><label for="fLinkBaseClientes">Base de clientes / relatório final (SharePoint)</label><input id="fLinkBaseClientes" type="url" placeholder="https://..."/></div>
             <div class="form-field"><label for="fLinkManual">Manual operacional (SharePoint)</label><input id="fLinkManual" type="url" placeholder="https://..."/></div>
           </div>
@@ -644,42 +633,42 @@ const SagecAPI = (function () {
   }
 
   const MOCK_EVENTOS = [
-    {id:1, ticker:"PETR4", empresa:"Petrobras", tipoEvento:"Grupamento", categoria:"Involuntario", tipoAtivo:"Acao", dataAnuncio:"2026-06-01", dataInicioPrazo:"2026-07-25", dataCom:"2026-07-25", dataLimiteFinal:"2026-07-27", dataPagamento:"2026-07-28", precoEvento:null, precoMercado:32.40, fatorProporcao:"10:1", fatorDe:10, fatorPara:1, fatorTipoAplicacao:"Substitui", direitoNegociavel:"Nao", linkManual:"https://xpinc.sharepoint.com/manuais/grupamento.pdf", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", responsavel:"Operacoes RV", observacoes:"Grupamento aprovado em AGE; aguardando liberacao da B3.", documentoLink:null,
+    {id:1, ticker:"PETR4", empresa:"Petrobras", tipoEvento:"Grupamento", categoria:"Involuntario", tipoAtivo:"Acao", dataAnuncio:"2026-06-01", dataInicioPrazo:"2026-07-25", dataCom:"2026-07-25", dataLimiteFinal:"2026-07-27", dataPagamento:"2026-07-28", precoEvento:null, precoMercado:32.40, fatorProporcao:"10:1", fatorDe:10, fatorPara:1, fatorTipoAplicacao:"Substitui", direitoNegociavel:"Nao", linkManual:"https://xpinc.sharepoint.com/manuais/grupamento.pdf", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", observacoes:"Grupamento aprovado em AGE; aguardando liberacao da B3.", documentoLink:null,
       faq:[
         {pergunta:"Preciso fazer algo para receber as novas ações?", resposta:"Não. O grupamento é automático; a posição é ajustada pela custódia na data de liquidação."},
         {pergunta:"O que acontece com a fração de ações que sobrar?", resposta:"Frações são agrupadas com as de outros acionistas e vendidas em leilão na B3; o valor é rateado proporcionalmente e creditado em conta."},
       ]},
-    {id:2, ticker:"ITUB4", empresa:"Itau Unibanco", tipoEvento:"Bonificacao", categoria:"Involuntario", tipoAtivo:"Acao", ativoDireito:"ITUB2", direitoNegociavel:"Sim", dataAnuncio:"2026-06-20", dataInicioPrazo:"2026-07-15", dataCom:"2026-07-15", dataLimiteFinal:"2026-07-16", dataPagamento:"2026-07-20", precoEvento:null, precoMercado:35.10, fatorProporcao:"1:10", fatorDe:10, fatorPara:1, fatorTipoAplicacao:"Adiciona", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", responsavel:"Custodia", observacoes:"Prazo tecnico vencido - priorizar.", documentoLink:"https://ri.itau.com.br/fato-relevante-2026-07"},
-    {id:3, ticker:"VALE3", empresa:"Vale S.A.", tipoEvento:"Desdobramento", categoria:"Involuntario", tipoAtivo:"Acao", dataAnuncio:"2026-07-10", dataInicioPrazo:"2026-08-05", dataCom:"2026-08-05", dataLimiteFinal:"2026-08-06", dataPagamento:"2026-08-10", precoEvento:null, precoMercado:68.90, fatorProporcao:"1:2", fatorDe:1, fatorPara:2, fatorTipoAplicacao:"Substitui", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", responsavel:"Operacoes RV", observacoes:"", documentoLink:null},
-    {id:4, ticker:"BBAS3", empresa:"Banco do Brasil", tipoEvento:"Leilao de Fracoes", categoria:"Involuntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-20", dataCom:null, dataLimiteFinal:"2026-07-22", dataPagamento:"2026-07-27", precoEvento:null, precoMercado:26.15, fatorProporcao:"-", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", responsavel:"Operacoes RV", observacoes:"Leilao de fracoes na B3; confirmar preco apos o pregao.", documentoLink:null},
-    {id:5, ticker:"WEGE3", empresa:"WEG S.A.", tipoEvento:"Mudanca de Ticker", categoria:"Involuntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-10", dataCom:null, dataLimiteFinal:"2026-07-10", dataPagamento:"2026-07-10", precoEvento:null, precoMercado:41.20, fatorProporcao:"1:1", etapaProcesso:"Concluido", statusComunicacao:"Comunicado", responsavel:"Custodia", observacoes:"Migracao de ticker concluida; carteiras ja atualizadas.", documentoLink:null},
-    {id:6, ticker:"AAPL34", empresa:"Apple Inc. (BDR)", tipoEvento:"Encerramento de BDR", categoria:"Involuntario", tipoAtivo:"BDR", dataInicioPrazo:"2026-05-20", dataCom:null, dataLimiteFinal:"2026-06-05", dataPagamento:"2026-06-10", precoEvento:null, precoMercado:null, fatorProporcao:"1:1", etapaProcesso:"Concluido", statusComunicacao:"Comunicado", responsavel:"Atendimento", observacoes:"Programa de BDR encerrado pelo banco depositario.", documentoLink:null},
-    {id:7, ticker:"VALE3", empresa:"Vale S.A. (Subscricao)", tipoEvento:"Subscricao", categoria:"Voluntario", tipoAtivo:"Acao", ativoDireito:"VALE1", direitoNegociavel:"Sim", dataAnuncio:"2026-07-01", dataInicioPrazo:"2026-07-12", dataCom:"2026-07-10", dataLimiteFinal:"2026-08-05", dataPagamento:"2026-08-12", precoEvento:68.00, precoMercado:72.50, fatorProporcao:"1 nova para cada 5 possuidas", fatorDe:5, fatorPara:1, fatorTipoAplicacao:"Adiciona", etapaProcesso:"Comunicacao", statusComunicacao:"Comunicado", responsavel:"Operacoes RV", observacoes:"Comunicado enviado aos clientes elegiveis em 12/07.", documentoLink:"https://ri.vale.com/subscricao-2026",
+    {id:2, ticker:"ITUB4", empresa:"Itau Unibanco", tipoEvento:"Bonificacao", categoria:"Involuntario", tipoAtivo:"Acao", ativoDireito:"ITUB2", direitoNegociavel:"Sim", dataAnuncio:"2026-06-20", dataInicioPrazo:"2026-07-15", dataCom:"2026-07-15", dataLimiteFinal:"2026-07-16", dataPagamento:"2026-07-20", precoEvento:null, precoMercado:35.10, fatorProporcao:"1:10", fatorDe:10, fatorPara:1, fatorTipoAplicacao:"Adiciona", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", observacoes:"Prazo tecnico vencido - priorizar.", documentoLink:"https://ri.itau.com.br/fato-relevante-2026-07"},
+    {id:3, ticker:"VALE3", empresa:"Vale S.A.", tipoEvento:"Desdobramento", categoria:"Involuntario", tipoAtivo:"Acao", dataAnuncio:"2026-07-10", dataInicioPrazo:"2026-08-05", dataCom:"2026-08-05", dataLimiteFinal:"2026-08-06", dataPagamento:"2026-08-10", precoEvento:null, precoMercado:68.90, fatorProporcao:"1:2", fatorDe:1, fatorPara:2, fatorTipoAplicacao:"Substitui", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", observacoes:"", documentoLink:null},
+    {id:4, ticker:"BBAS3", empresa:"Banco do Brasil", tipoEvento:"Leilao de Fracoes", categoria:"Involuntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-20", dataCom:null, dataLimiteFinal:"2026-07-22", dataPagamento:"2026-07-27", precoEvento:null, precoMercado:26.15, fatorProporcao:"-", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", observacoes:"Leilao de fracoes na B3; confirmar preco apos o pregao.", documentoLink:null},
+    {id:5, ticker:"WEGE3", empresa:"WEG S.A.", tipoEvento:"Mudanca de Ticker", categoria:"Involuntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-10", dataCom:null, dataLimiteFinal:"2026-07-10", dataPagamento:"2026-07-10", precoEvento:null, precoMercado:41.20, fatorProporcao:"1:1", etapaProcesso:"Concluido", statusComunicacao:"Comunicado", observacoes:"Migracao de ticker concluida; carteiras ja atualizadas.", documentoLink:null},
+    {id:6, ticker:"AAPL34", empresa:"Apple Inc. (BDR)", tipoEvento:"Encerramento de BDR", categoria:"Involuntario", tipoAtivo:"BDR", dataInicioPrazo:"2026-05-20", dataCom:null, dataLimiteFinal:"2026-06-05", dataPagamento:"2026-06-10", precoEvento:null, precoMercado:null, fatorProporcao:"1:1", etapaProcesso:"Concluido", statusComunicacao:"Comunicado", observacoes:"Programa de BDR encerrado pelo banco depositario.", documentoLink:null},
+    {id:7, ticker:"VALE3", empresa:"Vale S.A. (Subscricao)", tipoEvento:"Subscricao", categoria:"Voluntario", tipoAtivo:"Acao", ativoDireito:"VALE1", direitoNegociavel:"Sim", dataAnuncio:"2026-07-01", dataInicioPrazo:"2026-07-12", dataCom:"2026-07-10", dataLimiteFinal:"2026-08-05", dataPagamento:"2026-08-12", precoEvento:68.00, precoMercado:72.50, fatorProporcao:"1 nova para cada 5 possuidas", fatorDe:5, fatorPara:1, fatorTipoAplicacao:"Adiciona", etapaProcesso:"Comunicacao", statusComunicacao:"Comunicado", observacoes:"Comunicado enviado aos clientes elegiveis em 12/07.", documentoLink:"https://ri.vale.com/subscricao-2026",
       faq:[
         {pergunta:"Posso vender meu direito de subscrição em vez de exercer?", resposta:"Sim. O direito (VALE1) é negociável em bolsa durante o prazo de reserva, para quem não quiser desembolsar o valor da subscrição."},
         {pergunta:"O que acontece se eu não me manifestar até o prazo final?", resposta:"O direito não exercido expira sem valor; verifique a possibilidade de sobras, se aplicável ao evento."},
       ]},
-    {id:8, ticker:"CSNA3", empresa:"Cia. Siderurgica Nacional", tipoEvento:"Sobras de Subscricao", categoria:"Voluntario", tipoAtivo:"Acao", montanteAdicional:"Sim", dataInicioPrazo:"2026-07-15", dataCom:null, dataLimiteFinal:"2026-07-21", dataPagamento:"2026-07-29", precoEvento:12.30, precoMercado:11.80, fatorProporcao:"-", etapaProcesso:"Processamento", statusComunicacao:"Comunicado", responsavel:"Operacoes RV", observacoes:"Rateio de sobras em processamento.", documentoLink:null, linkBaseClientes:"https://xpinc.sharepoint.com/relatorios/sobras-csna3-clientes.xlsx"},
-    {id:9, ticker:"RADL3", empresa:"Raia Drogasil", tipoEvento:"Bonus de Subscricao", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-08-01", dataCom:null, dataLimiteFinal:"2026-08-20", dataPagamento:"2026-08-27", precoEvento:22.10, precoMercado:23.00, fatorProporcao:"-", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", responsavel:"Operacoes RV", observacoes:"", documentoLink:null},
-    {id:10, ticker:"EQTL3", empresa:"Equatorial Energia", tipoEvento:"Conversao", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-10", dataCom:null, dataLimiteFinal:"2026-08-02", dataPagamento:"2026-08-09", precoEvento:null, precoMercado:31.50, fatorProporcao:"-", etapaProcesso:"Validacao", statusComunicacao:"Pendente", responsavel:"Operacoes Renda Fixa", observacoes:"Titular pode converter debentures em acoes ate a data limite.", documentoLink:null},
-    {id:11, ticker:"JBSS3", empresa:"JBS S.A.", tipoEvento:"Dissidencia", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-05", dataCom:null, dataLimiteFinal:"2026-07-31", dataPagamento:"2026-08-07", precoEvento:34.50, precoMercado:33.00, fatorProporcao:"-", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", responsavel:"Compliance", observacoes:"Direito de retirada apos incorporacao aprovada em assembleia.", documentoLink:null},
-    {id:12, ticker:"NOVE3", empresa:"Nova Energia", tipoEvento:"IPO", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-28", dataCom:null, dataLimiteFinal:"2026-07-30", dataPagamento:"2026-08-04", precoEvento:null, precoMercado:null, fatorProporcao:"-", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", responsavel:"Operacoes RV", observacoes:"Oferta publica inicial; preco a fixar apos bookbuilding.", documentoLink:null},
-    {id:13, ticker:"MOVI3", empresa:"Movida Participacoes", tipoEvento:"Follow On", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-18", dataCom:null, dataLimiteFinal:"2026-07-22", dataPagamento:"2026-07-27", precoEvento:12.00, precoMercado:11.50, fatorProporcao:"-", etapaProcesso:"Comunicacao", statusComunicacao:"Comunicado", responsavel:"Operacoes RV", observacoes:"Oferta subsequente; faixa indicativa ja divulgada.", documentoLink:null},
-    {id:15, ticker:"USIM5", empresa:"Usiminas", tipoEvento:"Oferta Prioritaria", categoria:"Voluntario", tipoAtivo:"Acao", infoRateio:"Rateio proporcional às reservas não atendidas na primeira rodada, conforme prospecto.", dataInicioPrazo:"2026-07-08", dataCom:null, dataLimiteFinal:"2026-08-05", dataPagamento:"2026-08-12", precoEvento:7.80, precoMercado:7.82, fatorProporcao:"Direito de prioridade proporcional a posicao", etapaProcesso:"Validacao", statusComunicacao:"Pendente", responsavel:"Operacoes RV", observacoes:"", documentoLink:null},
-    {id:16, ticker:"TIMS3", empresa:"TIM S.A.", tipoEvento:"Subscricao", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-01", dataCom:null, dataLimiteFinal:"2026-07-19", dataPagamento:"2026-07-26", precoEvento:null, precoMercado:null, fatorProporcao:"-", etapaProcesso:"Validacao", statusComunicacao:"Pendente", responsavel:"Compliance", observacoes:"Prazo tecnico da B3 vencido; regularizar com urgencia.", documentoLink:null},
-    {id:17, ticker:"XPTO11", empresa:"XPTO Participacoes", tipoEvento:"OPA", categoria:"Voluntario", tipoAtivo:"FII", infoRateio:"Rateio proporcional entre os aceitantes da oferta, conforme edital do leilão.", linkManual:"https://xpinc.sharepoint.com/manuais/opa.pdf", dataInicioPrazo:"2026-07-01", dataCom:null, dataLimiteFinal:"2026-07-20", dataPagamento:"2026-07-27", precoEvento:12.80, precoMercado:11.90, fatorProporcao:"-", etapaProcesso:"Processamento", statusComunicacao:"Comunicado", responsavel:"Compliance", observacoes:"Leilao na B3 no ultimo dia do prazo.", documentoLink:null, linkBaseClientes:"https://xpinc.sharepoint.com/relatorios/opa-xpto11-clientes-finais.xlsx"},
-    {id:18, ticker:"CIEL3", empresa:"Cielo S.A.", tipoEvento:"OPA", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-06-01", dataCom:null, dataLimiteFinal:"2026-06-28", dataPagamento:null, precoEvento:null, precoMercado:null, fatorProporcao:"-", etapaProcesso:"Cancelado", statusComunicacao:"Comunicado", responsavel:"Compliance", observacoes:"OPA cancelada pelo ofertante antes da liquidacao.", documentoLink:null},
-    {id:19, ticker:"RAIL3", empresa:"Rumo S.A.", tipoEvento:"OPA", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-05-01", dataCom:null, dataLimiteFinal:"2026-05-29", dataPagamento:"2026-06-05", precoEvento:null, precoMercado:null, fatorProporcao:"-", etapaProcesso:"Concluido", statusComunicacao:"Comunicado", responsavel:"Compliance", observacoes:"OPA liquidada; processo encerrado.", documentoLink:null},
-    {id:20, ticker:"BBDC4", empresa:"Banco Bradesco", tipoEvento:"Leilao de Fracoes", categoria:"Involuntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-04-20", dataCom:null, dataLimiteFinal:"2026-04-24", dataPagamento:"2026-04-29", precoEvento:null, precoMercado:null, fatorProporcao:"-", etapaProcesso:"Concluido", statusComunicacao:"Comunicado", responsavel:"Operacoes RV", observacoes:"", documentoLink:null},
-    {id:22, ticker:"MGLU3", empresa:"Magazine Luiza", tipoEvento:"Grupamento", categoria:"Involuntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-08-12", dataCom:"2026-08-12", dataLimiteFinal:"2026-08-14", dataPagamento:"2026-08-17", precoEvento:null, precoMercado:9.85, fatorProporcao:"8:1", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", responsavel:"Operacoes RV", observacoes:"Grupamento aguardando homologacao da B3.", documentoLink:null},
-    {id:23, ticker:"HAPV3", empresa:"Hapvida", tipoEvento:"Subscricao", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-25", dataCom:"2026-09-01", dataLimiteFinal:"2026-08-25", dataPagamento:"2026-09-05", precoEvento:3.20, precoMercado:3.55, fatorProporcao:"1 nova para cada 8 possuidas", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", responsavel:"Operacoes RV", observacoes:"", documentoLink:null},
-    {id:24, ticker:"HGLG11", empresa:"CSHG Logistica FII", tipoEvento:"Subscricao", categoria:"Voluntario", tipoAtivo:"FII", dataInicioPrazo:"2026-07-20", dataCom:"2026-07-18", dataLimiteFinal:"2026-08-10", dataPagamento:"2026-08-15", precoEvento:178.50, precoMercado:185.90, fatorProporcao:"1 nova cota para cada 10 possuidas", etapaProcesso:"Comunicacao", statusComunicacao:"Comunicado", responsavel:"Operacoes RV", observacoes:"9a emissao de cotas do fundo.", documentoLink:"https://fnet.bmfbovespa.com.br/hglg11-9a-emissao"},
-    {id:25, ticker:"KNRI11", empresa:"Kinea Renda Imobiliaria FII", tipoEvento:"Desdobramento", categoria:"Involuntario", tipoAtivo:"FII", dataInicioPrazo:"2026-07-30", dataCom:null, dataLimiteFinal:"2026-08-01", dataPagamento:"2026-08-04", precoEvento:null, precoMercado:158.20, fatorProporcao:"1:5", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", responsavel:"Custodia", observacoes:"Desdobramento de cotas para aumentar liquidez.", documentoLink:null},
-    {id:26, ticker:"MXRF11", empresa:"Maxi Renda FII", tipoEvento:"Bonificacao", categoria:"Involuntario", tipoAtivo:"FII", dataInicioPrazo:"2026-06-01", dataCom:"2026-06-01", dataLimiteFinal:"2026-06-03", dataPagamento:"2026-06-08", precoEvento:null, precoMercado:10.45, fatorProporcao:"1:20", etapaProcesso:"Concluido", statusComunicacao:"Comunicado", responsavel:"Custodia", observacoes:"Bonificacao de cotas creditada aos cotistas.", documentoLink:null},
-    {id:27, ticker:"GOGL34", empresa:"Alphabet Inc. (BDR)", tipoEvento:"Grupamento", categoria:"Involuntario", tipoAtivo:"BDR", dataInicioPrazo:"2026-08-01", dataCom:null, dataLimiteFinal:"2026-08-03", dataPagamento:"2026-08-06", precoEvento:null, precoMercado:null, fatorProporcao:"20:1", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", responsavel:"Custodia", observacoes:"Reflete grupamento do ativo-objeto no mercado de origem.", documentoLink:null},
-    {id:28, ticker:"MSFT34", empresa:"Microsoft Corp. (BDR)", tipoEvento:"Mudanca de Ticker", categoria:"Involuntario", tipoAtivo:"BDR", dataInicioPrazo:"2026-07-22", dataCom:null, dataLimiteFinal:"2026-07-24", dataPagamento:"2026-07-26", precoEvento:null, precoMercado:null, fatorProporcao:"1:1", etapaProcesso:"Validacao", statusComunicacao:"Pendente", responsavel:"Custodia", observacoes:"Ajuste de programa de BDR junto ao banco depositario.", documentoLink:null},
-    {id:29, ticker:"AMER3", empresa:"Americanas S.A.", tipoEvento:"Mudanca de Ticker", categoria:"Involuntario", tipoAtivo:"Acao", ativoDireito:"BTOW3", fatorDe:1, fatorPara:1, fatorTipoAplicacao:"Substitui", linkManual:"https://xpinc.sharepoint.com/manuais/mudanca-ticker.pdf", dataAnuncio:"2026-03-01", dataInicioPrazo:"2026-03-15", dataCom:null, dataLimiteFinal:"2026-03-15", dataPagamento:"2026-03-15", precoEvento:null, precoMercado:null, fatorProporcao:"1:1", etapaProcesso:"Concluido", statusComunicacao:"Comunicado", responsavel:"Custodia", observacoes:"Ticker de origem BTOW3 migrado para AMER3 após reestruturação societária; carteiras já atualizadas.", documentoLink:null},
-    {id:30, ticker:"LIGT3", empresa:"Light S.A.", tipoEvento:"Subscricao", categoria:"Voluntario", tipoAtivo:"Acao", ativoDireito:"LIGT1", ativoResultado:"LIGT13", direitoNegociavel:"Sim", linkManual:"https://xpinc.sharepoint.com/manuais/subscricao.pdf", dataAnuncio:"2026-07-18", dataInicioPrazo:"2026-07-30", dataCom:"2026-07-28", dataLimiteFinal:"2026-08-22", dataPagamento:"2026-08-29", precoEvento:6.40, precoMercado:null, fatorProporcao:"1 nova para cada 4 possuidas", fatorDe:4, fatorPara:1, fatorTipoAplicacao:"Adiciona", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", responsavel:"Operacoes RV", observacoes:"Direito (LIGT1) negociável em bolsa; ativo resultado após exercício integral registrado como LIGT13.", documentoLink:null,
+    {id:8, ticker:"CSNA3", empresa:"Cia. Siderurgica Nacional", tipoEvento:"Sobras de Subscricao", categoria:"Voluntario", tipoAtivo:"Acao", montanteAdicional:"Sim", dataInicioPrazo:"2026-07-15", dataCom:null, dataLimiteFinal:"2026-07-21", dataPagamento:"2026-07-29", precoEvento:12.30, precoMercado:11.80, fatorProporcao:"-", etapaProcesso:"Processamento", statusComunicacao:"Comunicado", observacoes:"Rateio de sobras em processamento.", documentoLink:null, linkBaseClientes:"https://xpinc.sharepoint.com/relatorios/sobras-csna3-clientes.xlsx"},
+    {id:9, ticker:"RADL3", empresa:"Raia Drogasil", tipoEvento:"Bonus de Subscricao", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-08-01", dataCom:null, dataLimiteFinal:"2026-08-20", dataPagamento:"2026-08-27", precoEvento:22.10, precoMercado:23.00, fatorProporcao:"-", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", observacoes:"", documentoLink:null},
+    {id:10, ticker:"EQTL3", empresa:"Equatorial Energia", tipoEvento:"Conversao", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-10", dataCom:null, dataLimiteFinal:"2026-08-02", dataPagamento:"2026-08-09", precoEvento:null, precoMercado:31.50, fatorProporcao:"-", etapaProcesso:"Validacao", statusComunicacao:"Pendente", observacoes:"Titular pode converter debentures em acoes ate a data limite.", documentoLink:null},
+    {id:11, ticker:"JBSS3", empresa:"JBS S.A.", tipoEvento:"Dissidencia", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-05", dataCom:null, dataLimiteFinal:"2026-07-31", dataPagamento:"2026-08-07", precoEvento:34.50, precoMercado:33.00, fatorProporcao:"-", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", observacoes:"Direito de retirada apos incorporacao aprovada em assembleia.", documentoLink:null},
+    {id:12, ticker:"NOVE3", empresa:"Nova Energia", tipoEvento:"IPO", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-28", dataCom:null, dataLimiteFinal:"2026-07-30", dataPagamento:"2026-08-04", precoEvento:null, precoMercado:null, fatorProporcao:"-", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", observacoes:"Oferta publica inicial; preco a fixar apos bookbuilding.", documentoLink:null},
+    {id:13, ticker:"MOVI3", empresa:"Movida Participacoes", tipoEvento:"Follow On", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-18", dataCom:null, dataLimiteFinal:"2026-07-22", dataPagamento:"2026-07-27", precoEvento:12.00, precoMercado:11.50, fatorProporcao:"-", etapaProcesso:"Comunicacao", statusComunicacao:"Comunicado", observacoes:"Oferta subsequente; faixa indicativa ja divulgada.", documentoLink:null},
+    {id:15, ticker:"USIM5", empresa:"Usiminas", tipoEvento:"Oferta Prioritaria", categoria:"Voluntario", tipoAtivo:"Acao", infoRateio:"Rateio proporcional às reservas não atendidas na primeira rodada, conforme prospecto.", dataInicioPrazo:"2026-07-08", dataCom:null, dataLimiteFinal:"2026-08-05", dataPagamento:"2026-08-12", precoEvento:7.80, precoMercado:7.82, fatorProporcao:"Direito de prioridade proporcional a posicao", etapaProcesso:"Validacao", statusComunicacao:"Pendente", observacoes:"", documentoLink:null},
+    {id:16, ticker:"TIMS3", empresa:"TIM S.A.", tipoEvento:"Subscricao", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-01", dataCom:null, dataLimiteFinal:"2026-07-19", dataPagamento:"2026-07-26", precoEvento:null, precoMercado:null, fatorProporcao:"-", etapaProcesso:"Validacao", statusComunicacao:"Pendente", observacoes:"Prazo tecnico da B3 vencido; regularizar com urgencia.", documentoLink:null},
+    {id:17, ticker:"XPTO11", empresa:"XPTO Participacoes", tipoEvento:"OPA", categoria:"Voluntario", tipoAtivo:"FII", infoRateio:"Rateio proporcional entre os aceitantes da oferta, conforme edital do leilão.", linkManual:"https://xpinc.sharepoint.com/manuais/opa.pdf", dataInicioPrazo:"2026-07-01", dataCom:null, dataLimiteFinal:"2026-07-20", dataPagamento:"2026-07-27", precoEvento:12.80, precoMercado:11.90, fatorProporcao:"-", etapaProcesso:"Processamento", statusComunicacao:"Comunicado", observacoes:"Leilao na B3 no ultimo dia do prazo.", documentoLink:null, linkBaseClientes:"https://xpinc.sharepoint.com/relatorios/opa-xpto11-clientes-finais.xlsx"},
+    {id:18, ticker:"CIEL3", empresa:"Cielo S.A.", tipoEvento:"OPA", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-06-01", dataCom:null, dataLimiteFinal:"2026-06-28", dataPagamento:null, precoEvento:null, precoMercado:null, fatorProporcao:"-", etapaProcesso:"Cancelado", statusComunicacao:"Comunicado", observacoes:"OPA cancelada pelo ofertante antes da liquidacao.", documentoLink:null},
+    {id:19, ticker:"RAIL3", empresa:"Rumo S.A.", tipoEvento:"OPA", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-05-01", dataCom:null, dataLimiteFinal:"2026-05-29", dataPagamento:"2026-06-05", precoEvento:null, precoMercado:null, fatorProporcao:"-", etapaProcesso:"Concluido", statusComunicacao:"Comunicado", observacoes:"OPA liquidada; processo encerrado.", documentoLink:null},
+    {id:20, ticker:"BBDC4", empresa:"Banco Bradesco", tipoEvento:"Leilao de Fracoes", categoria:"Involuntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-04-20", dataCom:null, dataLimiteFinal:"2026-04-24", dataPagamento:"2026-04-29", precoEvento:null, precoMercado:null, fatorProporcao:"-", etapaProcesso:"Concluido", statusComunicacao:"Comunicado", observacoes:"", documentoLink:null},
+    {id:22, ticker:"MGLU3", empresa:"Magazine Luiza", tipoEvento:"Grupamento", categoria:"Involuntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-08-12", dataCom:"2026-08-12", dataLimiteFinal:"2026-08-14", dataPagamento:"2026-08-17", precoEvento:null, precoMercado:9.85, fatorProporcao:"8:1", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", observacoes:"Grupamento aguardando homologacao da B3.", documentoLink:null},
+    {id:23, ticker:"HAPV3", empresa:"Hapvida", tipoEvento:"Subscricao", categoria:"Voluntario", tipoAtivo:"Acao", dataInicioPrazo:"2026-07-25", dataCom:"2026-09-01", dataLimiteFinal:"2026-08-25", dataPagamento:"2026-09-05", precoEvento:3.20, precoMercado:3.55, fatorProporcao:"1 nova para cada 8 possuidas", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", observacoes:"", documentoLink:null},
+    {id:24, ticker:"HGLG11", empresa:"CSHG Logistica FII", tipoEvento:"Subscricao", categoria:"Voluntario", tipoAtivo:"FII", dataInicioPrazo:"2026-07-20", dataCom:"2026-07-18", dataLimiteFinal:"2026-08-10", dataPagamento:"2026-08-15", precoEvento:178.50, precoMercado:185.90, fatorProporcao:"1 nova cota para cada 10 possuidas", etapaProcesso:"Comunicacao", statusComunicacao:"Comunicado", observacoes:"9a emissao de cotas do fundo.", documentoLink:"https://fnet.bmfbovespa.com.br/hglg11-9a-emissao"},
+    {id:25, ticker:"KNRI11", empresa:"Kinea Renda Imobiliaria FII", tipoEvento:"Desdobramento", categoria:"Involuntario", tipoAtivo:"FII", dataInicioPrazo:"2026-07-30", dataCom:null, dataLimiteFinal:"2026-08-01", dataPagamento:"2026-08-04", precoEvento:null, precoMercado:158.20, fatorProporcao:"1:5", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", observacoes:"Desdobramento de cotas para aumentar liquidez.", documentoLink:null},
+    {id:26, ticker:"MXRF11", empresa:"Maxi Renda FII", tipoEvento:"Bonificacao", categoria:"Involuntario", tipoAtivo:"FII", dataInicioPrazo:"2026-06-01", dataCom:"2026-06-01", dataLimiteFinal:"2026-06-03", dataPagamento:"2026-06-08", precoEvento:null, precoMercado:10.45, fatorProporcao:"1:20", etapaProcesso:"Concluido", statusComunicacao:"Comunicado", observacoes:"Bonificacao de cotas creditada aos cotistas.", documentoLink:null},
+    {id:27, ticker:"GOGL34", empresa:"Alphabet Inc. (BDR)", tipoEvento:"Grupamento", categoria:"Involuntario", tipoAtivo:"BDR", dataInicioPrazo:"2026-08-01", dataCom:null, dataLimiteFinal:"2026-08-03", dataPagamento:"2026-08-06", precoEvento:null, precoMercado:null, fatorProporcao:"20:1", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", observacoes:"Reflete grupamento do ativo-objeto no mercado de origem.", documentoLink:null},
+    {id:28, ticker:"MSFT34", empresa:"Microsoft Corp. (BDR)", tipoEvento:"Mudanca de Ticker", categoria:"Involuntario", tipoAtivo:"BDR", dataInicioPrazo:"2026-07-22", dataCom:null, dataLimiteFinal:"2026-07-24", dataPagamento:"2026-07-26", precoEvento:null, precoMercado:null, fatorProporcao:"1:1", etapaProcesso:"Validacao", statusComunicacao:"Pendente", observacoes:"Ajuste de programa de BDR junto ao banco depositario.", documentoLink:null},
+    {id:29, ticker:"AMER3", empresa:"Americanas S.A.", tipoEvento:"Mudanca de Ticker", categoria:"Involuntario", tipoAtivo:"Acao", ativoDireito:"BTOW3", fatorDe:1, fatorPara:1, fatorTipoAplicacao:"Substitui", linkManual:"https://xpinc.sharepoint.com/manuais/mudanca-ticker.pdf", dataAnuncio:"2026-03-01", dataInicioPrazo:"2026-03-15", dataCom:null, dataLimiteFinal:"2026-03-15", dataPagamento:"2026-03-15", precoEvento:null, precoMercado:null, fatorProporcao:"1:1", etapaProcesso:"Concluido", statusComunicacao:"Comunicado", observacoes:"Ticker de origem BTOW3 migrado para AMER3 após reestruturação societária; carteiras já atualizadas.", documentoLink:null},
+    {id:30, ticker:"LIGT3", empresa:"Light S.A.", tipoEvento:"Subscricao", categoria:"Voluntario", tipoAtivo:"Acao", ativoDireito:"LIGT1", ativoResultado:"LIGT13", direitoNegociavel:"Sim", linkManual:"https://xpinc.sharepoint.com/manuais/subscricao.pdf", dataAnuncio:"2026-07-18", dataInicioPrazo:"2026-07-30", dataCom:"2026-07-28", dataLimiteFinal:"2026-08-22", dataPagamento:"2026-08-29", precoEvento:6.40, precoMercado:null, fatorProporcao:"1 nova para cada 4 possuidas", fatorDe:4, fatorPara:1, fatorTipoAplicacao:"Adiciona", etapaProcesso:"Cadastro", statusComunicacao:"Pendente", observacoes:"Direito (LIGT1) negociável em bolsa; ativo resultado após exercício integral registrado como LIGT13.", documentoLink:null,
       faq:[
         {pergunta:"Por que aparecem três códigos diferentes (LIGT3, LIGT1, LIGT13) para o mesmo evento?", resposta:"LIGT3 é o ativo base (ação já possuída), LIGT1 é o direito de subscrição gerado (negociável em bolsa) e LIGT13 é o código do ativo resultante após o exercício do direito."},
       ]},
@@ -741,7 +730,7 @@ const SagecAPI = (function () {
             infoRateio: payload.infoRateio || null,
             montanteAdicional: payload.montanteAdicional || null,
             etapaProcesso: payload.etapaProcesso || "Cadastro",
-            statusComunicacao: payload.statusComunicacao || "Pendente", responsavel: payload.responsavel || "",
+            statusComunicacao: payload.statusComunicacao || "Pendente",
             observacoes: payload.observacoes || "", documentoLink: payload.documentoLink || null,
             linkBaseClientes: payload.linkBaseClientes || null,
             linkManual: payload.linkManual || null,
@@ -967,8 +956,8 @@ const SagecAPI = (function () {
       + kpiCard("Voluntários abertos","var(--steel-400)",voluntarios,"subscrições e ofertas");
   }
   function kpiCard(label,color,value,sub){
-    return '<div class="kpi-card"><div class="kpi-label">'+label+' <span class="kpi-dot" style="background:'+color+'"></span></div>'
-      +'<div class="kpi-value">'+value+'</div><div class="kpi-sub">'+sub+'</div></div>';
+    return '<div class="kpi-card"><div class="kpi-left"><div class="kpi-label"><span class="kpi-dot" style="background:'+color+'"></span>'+label+'</div>'
+      +'<div class="kpi-sub">'+sub+'</div></div><div class="kpi-value">'+value+'</div></div>';
   }
 
   // ---------- notificações ----------
@@ -1292,7 +1281,7 @@ const SagecAPI = (function () {
         +'<div><span>Direito negociável?</span><b>'+simNaoLabel(ev.direitoNegociavel)+'</b></div>'
         +'<div><span>Fator</span><b>'+ev.fatorProporcao+'</b></div>'
         +'<div><span>'+basisLabel+'</span><b class="tabular">'+fmtDate(basisValue)+'</b></div>'
-        +'<div><span>Dias restantes</span><b class="tabular">'+(ev.diasRestantes==null?"—":ev.diasRestantes+"d")+'</b></div>'
+        +'<div><span>Preço do evento</span><b class="tabular">'+fmtBRL(ev.precoEvento)+'</b></div>'
         +'<div><span>Documento</span><b>'+(ev.documentoLink ? '<a class="doc-link" href="'+ev.documentoLink+'" target="_blank" rel="noopener noreferrer">Abrir ↗</a>' : "—")+'</b></div>'
         + camposExtras
       +'</div>'
@@ -1355,21 +1344,48 @@ const SagecAPI = (function () {
     else renderPosicao(el, ev);
   }
 
+  // Deriva o multiplicador direto do proprio campo "Fator/Proporcao" do
+  // evento — unica fonte usada pelos simuladores (nao ha mais De/Para
+  // separado nem opcao de editar). Aceita "N:M" (ex: "10:1" -> 0.1,
+  // multiplica quantidade por para/de) ou um numero puro ja pronto como
+  // multiplicador (ex: "0.05721967934", como cadastrado direto na planilha).
+  // Texto livre (ex: "1 nova para cada 5 possuidas") nao da pra calcular
+  // automaticamente — nesse caso os simuladores mostram um aviso.
+  function parseFatorMultiplicador(fatorProporcao){
+    if(!fatorProporcao) return null;
+    var s = String(fatorProporcao).trim();
+    var mRatio = s.match(/^(\d+(?:[.,]\d+)?)\s*:\s*(\d+(?:[.,]\d+)?)$/);
+    if(mRatio){
+      var de = parseFloat(mRatio[1].replace(",", "."));
+      var para = parseFloat(mRatio[2].replace(",", "."));
+      return de > 0 ? para/de : null;
+    }
+    if(/^-?\d+(?:[.,]\d+)?$/.test(s)) return parseFloat(s.replace(",", "."));
+    return null;
+  }
+  function semFatorHtml(ev){
+    return '<p style="font-size:12px;color:var(--ink-600);margin:8px 0 0;">O fator deste evento ("'+(ev.fatorProporcao||"—")+'") não está num formato que dá pra calcular automaticamente (use "N:M", ex: "10:1", ou um número). Ajuste o Fator/Proporção na planilha para ativar o simulador.</p>';
+  }
+
   function renderCompensacao(el, ev){
     if(ev.precoEvento == null){
       el.innerHTML = '<p style="font-size:12px;color:var(--ink-600);margin:8px 0 0;">Este evento não tem preço definido — use a calculadora de Posição/Direitos.</p>';
       return;
     }
-    var fatorPctDefault = (ev.fatorDe && ev.fatorPara) ? +(ev.fatorPara/ev.fatorDe*100).toFixed(4) : 20;
+    var mult = parseFatorMultiplicador(ev.fatorProporcao);
+    if(mult == null){
+      el.innerHTML = semFatorHtml(ev);
+      return;
+    }
     el.innerHTML =
       '<div class="sim-row"><div class="sim-field"><label>Ações/cotas possuídas</label><input type="number" id="simQtd" value="1000" min="0"/></div>'
-      +'<div class="sim-field"><label>Fator (%)</label><input type="number" id="simFator" value="'+fatorPctDefault+'" min="0"/></div></div>'
+      +'<div class="sim-field"><label>Fator do evento</label><div class="tabular" style="padding:8.5px 0;font-size:13px;font-weight:600;">'+ev.fatorProporcao+'</div></div></div>'
+      +'<p style="font-size:10.5px;color:var(--ink-600);margin:-6px 0 10px;">multiplicador ×'+mult+' ('+(mult*100).toFixed(4)+'%)</p>'
       +'<div class="sim-result" id="simResult"></div>'
       +'<p style="font-size:10.5px;color:var(--ink-600);margin:8px 0 0;">⏱️ A cotação de mercado usada aqui pode estar atrasada (delay) em relação ao preço real de negociação.</p>';
     var recompute = function(){
       var qtd = parseFloat(document.getElementById("simQtd").value)||0;
-      var fatorPct = parseFloat(document.getElementById("simFator").value)||0;
-      var novas = Math.floor(qtd * (fatorPct/100));
+      var novas = Math.floor(qtd * mult);
       var preco = ev.precoEvento || 0, mercado = ev.precoMercado || 0;
       var custo = novas*preco, economia = novas*(mercado-preco);
       var economiaClass = economia < 0 ? "cell lose" : "cell win";
@@ -1380,19 +1396,18 @@ const SagecAPI = (function () {
         +'<div class="cell"><span>Preço evento / mercado</span><b>'+(preco?"R$ "+preco.toFixed(2):"—")+' / '+(mercado?"R$ "+mercado.toFixed(2):"—")+'</b></div>';
     };
     document.getElementById("simQtd").addEventListener("input", recompute);
-    document.getElementById("simFator").addEventListener("input", recompute);
     recompute();
   }
 
   function renderPosicao(el, ev){
-    var aplicacaoPadrao = ev.fatorTipoAplicacao || (ev.categoria==="Involuntario" ? "Substitui" : "Adiciona");
+    var mult = parseFatorMultiplicador(ev.fatorProporcao);
+    if(mult == null){
+      el.innerHTML = semFatorHtml(ev);
+      return;
+    }
     el.innerHTML =
-      '<p style="font-size:11px;color:var(--ink-600);margin:0 0 10px;">A B3 calcula por conta/carteira individualmente — não pela posição total agregada. Some as carteiras onde o cliente tem o ativo.</p>'
-      +'<div class="sim-row">'
-        +'<div class="sim-field"><label>De (unidades antigas)</label><input type="number" id="pcFatorDe" min="1" value="'+(ev.fatorDe||1)+'"/></div>'
-        +'<div class="sim-field"><label>Para (unidades novas)</label><input type="number" id="pcFatorPara" min="0" value="'+(ev.fatorPara||1)+'"/></div>'
-        +'<div class="sim-field"><label>Resultado</label><select id="pcAplicacao"><option value="Substitui" '+(aplicacaoPadrao==="Substitui"?"selected":"")+'>Substitui a posição</option><option value="Adiciona" '+(aplicacaoPadrao==="Adiciona"?"selected":"")+'>Adiciona à posição</option></select></div>'
-      +'</div>'
+      '<p style="font-size:11px;color:var(--ink-600);margin:0 0 4px;">A B3 calcula por conta/carteira individualmente — não pela posição total agregada. Some as carteiras onde o cliente tem o ativo.</p>'
+      +'<p style="font-size:10.5px;color:var(--ink-600);margin:0 0 12px;">Fator do evento: <b>'+ev.fatorProporcao+'</b> (multiplicador ×'+mult+')</p>'
       +'<div id="carteiraList"></div>'
       +'<button type="button" class="ghost-btn" id="btnAddCarteira" style="margin:4px 0 12px;">+ Adicionar carteira</button>'
       +'<div id="posicaoResumo"></div>';
@@ -1416,18 +1431,11 @@ const SagecAPI = (function () {
     }
 
     function recomputePos(){
-      var fatorDe = parseFloat(document.getElementById("pcFatorDe").value) || 1;
-      if(fatorDe <= 0) fatorDe = 1;
-      var fatorPara = parseFloat(document.getElementById("pcFatorPara").value) || 0;
-      var aplicacao = document.getElementById("pcAplicacao").value;
-      var mult = fatorPara / fatorDe;
-
       var linhas = carteiras.map(function(c){
         var exato = c.posicao * mult;
         var resultado = Math.floor(exato);
         var fracao = exato - resultado;
-        var posicaoFinal = aplicacao === "Adiciona" ? c.posicao + resultado : resultado;
-        return {nome:c.nome, posicao:c.posicao, resultado:resultado, fracao:fracao, posicaoFinal:posicaoFinal};
+        return {nome:c.nome, posicao:c.posicao, resultado:resultado, fracao:fracao};
       });
 
       var totalPosicao = carteiras.reduce(function(s,c){return s+c.posicao;}, 0);
@@ -1457,9 +1465,6 @@ const SagecAPI = (function () {
     }
 
     renderCarteiraList();
-    document.getElementById("pcFatorDe").addEventListener("input", recomputePos);
-    document.getElementById("pcFatorPara").addEventListener("input", recomputePos);
-    document.getElementById("pcAplicacao").addEventListener("change", recomputePos);
     document.getElementById("btnAddCarteira").addEventListener("click", function(){
       carteiras.push({nome:"Carteira "+(carteiras.length+1), posicao:0});
       renderCarteiraList();
@@ -1604,9 +1609,6 @@ const SagecAPI = (function () {
       document.getElementById("fDireitoNegociavel").value = ev.direitoNegociavel || "";
       document.getElementById("fMontanteAdicional").value = ev.montanteAdicional || "";
       document.getElementById("fInfoRateio").value = ev.infoRateio || "";
-      document.getElementById("fFatorDe").value = ev.fatorDe != null ? ev.fatorDe : "";
-      document.getElementById("fFatorPara").value = ev.fatorPara != null ? ev.fatorPara : "";
-      document.getElementById("fFatorAplicacao").value = ev.fatorTipoAplicacao || "";
       document.getElementById("fLinkBaseClientes").value = ev.linkBaseClientes || "";
       document.getElementById("fLinkManual").value = ev.linkManual || "";
     }
@@ -1648,9 +1650,6 @@ const SagecAPI = (function () {
       direitoNegociavel: document.getElementById("fDireitoNegociavel").value || null,
       montanteAdicional: document.getElementById("fMontanteAdicional").value || null,
       infoRateio: document.getElementById("fInfoRateio").value || null,
-      fatorDe: document.getElementById("fFatorDe").value ? parseFloat(document.getElementById("fFatorDe").value) : null,
-      fatorPara: document.getElementById("fFatorPara").value ? parseFloat(document.getElementById("fFatorPara").value) : null,
-      fatorTipoAplicacao: document.getElementById("fFatorAplicacao").value || null,
       linkBaseClientes: document.getElementById("fLinkBaseClientes").value || null,
       linkManual: document.getElementById("fLinkManual").value || null,
       faq: faqAtual.filter(function(item){ return item.pergunta && item.pergunta.trim(); }),
