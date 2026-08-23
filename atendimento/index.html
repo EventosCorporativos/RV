@@ -112,10 +112,12 @@
   .theme-toggle button{width:30px;height:30px;border-radius:8px;border:none;background:transparent;color:var(--ink-400);display:flex;align-items:center;justify-content:center;cursor:pointer;}
   .theme-toggle button svg{width:15px;height:15px;}
   .theme-toggle button.active{background:var(--navy-900);color:var(--gold-300);}
-  .notif-panel{position:absolute;top:56px;right:28px;width:340px;background:var(--paper-0);border:1px solid var(--border);border-radius:var(--radius-m);box-shadow:var(--shadow-2);z-index:30;display:none;overflow:hidden;}
-  .notif-panel.open{display:block;}
-  .notif-head{padding:14px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center;}
+  .notif-panel{position:absolute;top:56px;right:28px;width:340px;max-height:420px;background:var(--paper-0);border:1px solid var(--border);border-radius:var(--radius-m);box-shadow:var(--shadow-2);z-index:30;display:none;overflow:hidden;}
+  .notif-panel.open{display:flex;flex-direction:column;}
+  .notif-head{padding:14px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center;flex:0 0 auto;}
   .notif-head span{color:var(--ink-600);font-weight:400;font-size:11.5px;}
+  .notif-body{overflow-y:auto;}
+  .notif-section-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-600);padding:10px 16px 4px;background:var(--paper-50);}
   .notif-item{padding:11px 16px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;gap:10px;}
   .notif-item:last-child{border-bottom:none;}
   .notif-item:hover{background:var(--paper-50);}
@@ -162,7 +164,12 @@
   .carteira-remove{background:var(--crit-bg);color:var(--crit-500);border:none;border-radius:8px;height:34px;cursor:pointer;flex:0 0 auto;padding:0 10px;}
 
   .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
-  .kpi-card{background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));border-radius:var(--radius-l);padding:12px 18px;box-shadow:var(--shadow-1);display:flex;align-items:center;justify-content:space-between;gap:14px;}
+  .kpi-card{background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));border-radius:var(--radius-l);padding:12px 18px;box-shadow:var(--shadow-1);display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer;transition:box-shadow .15s,border-color .15s;}
+  .kpi-card:hover{border-color:var(--gold-300);}
+  .kpi-card.active{border-color:var(--gold-500);box-shadow:0 0 0 2px var(--gold-300) inset,var(--shadow-1);}
+  .filter-tag{display:inline-flex;align-items:center;gap:6px;background:var(--gold-050);color:var(--ink-900);border:1px solid var(--gold-300);border-radius:100px;padding:3px 6px 3px 10px;font-size:11px;font-weight:600;}
+  .filter-tag button{background:none;border:none;cursor:pointer;color:var(--ink-600);width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;line-height:1;padding:0;}
+  .filter-tag button:hover{background:rgba(20,33,58,.12);color:var(--ink-900);}
   .kpi-left{min-width:0;}
   .kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-600);display:flex;align-items:center;gap:6px;white-space:nowrap;}
   .kpi-value{font-family:var(--font-data);font-size:26px;font-weight:600;letter-spacing:-.01em;text-align:right;flex:0 0 auto;}
@@ -264,6 +271,27 @@
   .approval-strip{display:flex;align-items:center;gap:10px;background:var(--gold-050);border:1px solid var(--gold-300);border-radius:var(--radius-m);padding:12px 16px;font-size:12px;color:var(--ink-900);}
   .approval-strip b{font-weight:600;}
 
+  .cal-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:12px;}
+  .cal-legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--ink-600);}
+  .cal-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;}
+  .calendar-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px;}
+  .calendar-weekdays div{text-align:center;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-600);padding:2px 0;}
+  .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+  .calendar-day{aspect-ratio:1/0.92;border:1px solid var(--border);border-radius:10px;padding:6px 7px;cursor:pointer;display:flex;flex-direction:column;gap:5px;background:var(--paper-0);transition:border-color .12s,background .12s;}
+  .calendar-day:hover{border-color:var(--gold-300);}
+  .calendar-day.other-month{opacity:.38;}
+  .calendar-day.today .cal-day-num{background:var(--navy-900);color:var(--gold-300);}
+  .calendar-day.selected{border-color:var(--gold-500);background:var(--gold-050);box-shadow:0 0 0 1px var(--gold-500) inset;}
+  .cal-day-num{font-family:var(--font-data);font-size:11.5px;font-weight:600;width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;}
+  .cal-day-badges{display:flex;flex-wrap:wrap;gap:3px;align-content:flex-start;flex:1;}
+  .cal-badge{width:7px;height:7px;border-radius:50%;flex:0 0 auto;}
+  .cal-badge-more{font-size:9.5px;color:var(--ink-600);font-family:var(--font-data);}
+  .cal-day-group-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-600);display:flex;align-items:center;gap:6px;margin:14px 0 6px;}
+  .cal-day-group-label:first-child{margin-top:0;}
+  .cal-event-item{padding:9px 11px;border:1px solid var(--border);border-radius:9px;cursor:pointer;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .cal-event-item:hover{background:var(--paper-50);border-color:var(--gold-300);}
+  .cal-event-item .ticker{font-size:12.5px;}
+  .cal-event-empty{color:var(--ink-400);font-size:12px;text-align:center;padding:30px 14px;}
   @media (max-width:1180px){.workspace,.workspace.workspace-even{grid-template-columns:1fr;} .kpi-row{grid-template-columns:repeat(2,1fr);} .form-row{grid-template-columns:1fr;}}
   @media (prefers-reduced-motion:reduce){*{transition:none !important;}}
 </style>
@@ -282,6 +310,7 @@
 
     <div class="nav-section-label">Principal</div>
     <div class="nav-item active" data-view="dashboard" id="navDashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span class="nav-label">Dashboard</span></div>
+    <div class="nav-item" data-view="calendario" id="navCalendario"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4.5" width="18" height="16" rx="2"/><line x1="3" y1="9.5" x2="21" y2="9.5"/><line x1="8" y1="2.5" x2="8" y2="6.5"/><line x1="16" y1="2.5" x2="16" y2="6.5"/></svg><span class="nav-label">Calendário</span></div>
     <div class="nav-item" id="navSimulador"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="9" y2="11"/><line x1="12" y1="11" x2="13" y2="11"/><line x1="16" y1="11" x2="17" y2="11"/><line x1="8" y1="15" x2="9" y2="15"/><line x1="12" y1="15" x2="13" y2="15"/><line x1="16" y1="15" x2="17" y2="15"/></svg><span class="nav-label">Simulador</span></div>
     <div class="nav-item" data-view="conceitos" id="navConceitos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 6C10 4.5 7 4 4 4v14c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2z"/><line x1="12" y1="6" x2="12" y2="20"/></svg><span class="nav-label">Conceito</span></div>
 
@@ -317,7 +346,7 @@
         </button>
         <div class="notif-panel" id="notifPanel">
           <div class="notif-head">Ação necessária <span id="notifCount">0 eventos</span></div>
-          <div id="notifList"></div>
+          <div id="notifList" class="notif-body"></div>
         </div>
       </div>
       <div class="theme-toggle" id="themeToggle">
@@ -336,7 +365,10 @@
           <div class="panel">
             <div class="panel-head">
               <h2>Eventos</h2>
-              <span class="count" id="rowCount">—</span>
+              <div class="panel-head-right">
+                <span id="kpiFilterTag"></span>
+                <span class="count" id="rowCount">—</span>
+              </div>
             </div>
             <div class="table-wrap">
               <table>
@@ -362,6 +394,40 @@
           <div class="panel">
             <div class="panel-head"><h2>Detalhe do evento</h2></div>
             <div class="detail-body" id="detailBody"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="viewCalendario" class="view-stack" style="display:none;">
+        <div class="page-head">
+          <div><h1>Calendário de Eventos</h1><p>Data Com, Data Ex, encerramento de reservas e pagamento/liquidação — por dia</p></div>
+        </div>
+        <div class="workspace workspace-even">
+          <div class="panel">
+            <div class="panel-head">
+              <h2 id="calMesLabel">—</h2>
+              <div class="panel-head-right" style="gap:6px;">
+                <button class="ghost-btn" id="calBtnHoje">Hoje</button>
+                <button class="icon-btn" id="calBtnPrev" aria-label="Mês anterior" style="width:32px;height:32px;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+                <button class="icon-btn" id="calBtnNext" aria-label="Próximo mês" style="width:32px;height:32px;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+              </div>
+            </div>
+            <div style="padding:14px 16px;">
+              <div class="cal-legend">
+                <span class="cal-legend-item"><span class="cal-dot" style="background:var(--steel-400)"></span>Data Com</span>
+                <span class="cal-legend-item"><span class="cal-dot" style="background:var(--gold-500)"></span>Data Ex</span>
+                <span class="cal-legend-item"><span class="cal-dot" style="background:var(--warn-500)"></span>Encerramento / prazo final</span>
+                <span class="cal-legend-item"><span class="cal-dot" style="background:var(--ok-500)"></span>Pagamento / liquidação</span>
+              </div>
+              <div class="calendar-weekdays">
+                <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+              </div>
+              <div class="calendar-grid" id="calGrid"></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h2 id="calDiaLabel">Hoje</h2><span class="count" id="calDiaCount">—</span></div>
+            <div class="detail-body" id="calDiaBody"></div>
           </div>
         </div>
       </div>
@@ -917,6 +983,11 @@ const SagecAPI = (function () {
   var RISCO_ORDEM = {Vermelho:3, Amarelo:2, Verde:1, "-":0};
   var TIPO_ATIVO_LABEL = {Acao:"Ação", FII:"FII", BDR:"BDR"};
 
+  var MESES_PT = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  function isoDate(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+  var calViewMonth = TODAY.getMonth(), calViewYear = TODAY.getFullYear();
+  var calSelectedIso = isoDate(TODAY);
+
   function statusPill(status){
     var map = {"Ativo":"ok","Futuro":"neutral","Encerrado":"neutral","Cancelado":"void"};
     return '<span class="pill '+(map[status]||"neutral")+'">'+status+'</span>';
@@ -937,6 +1008,18 @@ const SagecAPI = (function () {
       +" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
   }
   function fmtBRL(v){ return v==null ? "—" : "R$ "+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2}); }
+  // pt-BR usa vírgula como separador decimal (ponto é o americano usado por
+  // padrão em template strings de número no JS) — usada no multiplicador do
+  // Fator no Simulador, para não mostrar "×0.1" onde deveria ser "×0,1".
+  function fmtNumBR(v, casasMax){
+    return Number(v).toLocaleString('pt-BR', {maximumFractionDigits: casasMax==null?6:casasMax});
+  }
+  // equivalente a toFixed(casas), mas com vírgula em vez de ponto (toFixed
+  // sempre preenche casas decimais fixas, diferente de fmtNumBR acima que
+  // corta zeros à direita)
+  function fmtNumBRFixo(v, casas){
+    return Number(v).toLocaleString('pt-BR', {minimumFractionDigits: casas, maximumFractionDigits: casas});
+  }
 
   function toast(msg, isErr){
     var t = document.getElementById("toast");
@@ -999,14 +1082,17 @@ const SagecAPI = (function () {
   function switchView(view){
     currentView = view;
     document.getElementById("viewDashboard").style.display = view==="dashboard" ? "" : "none";
+    document.getElementById("viewCalendario").style.display = view==="calendario" ? "" : "none";
     document.getElementById("viewAuditoria").style.display = view==="auditoria" ? "" : "none";
     document.getElementById("viewManuais").style.display = view==="manuais" ? "" : "none";
     document.getElementById("viewConceitos").style.display = view==="conceitos" ? "" : "none";
     setActiveNav(view);
     if(view==="auditoria") carregarAuditoria();
     if(view==="manuais") renderManuais();
+    if(view==="calendario") renderCalendario();
   }
   document.getElementById("navDashboard").addEventListener("click", function(){ switchView("dashboard"); });
+  document.getElementById("navCalendario").addEventListener("click", function(){ switchView("calendario"); });
   document.getElementById("navConceitos").addEventListener("click", function(){ switchView("conceitos"); });
   document.getElementById("navAuditoria").addEventListener("click", function(){
     if(!isOps){ toast("Auditoria disponível apenas para o perfil Operações", true); return; }
@@ -1038,36 +1124,92 @@ const SagecAPI = (function () {
   });
 
   // ---------- KPIs ----------
+  // Clicar num card filtra a tabela de Eventos pelo mesmo critério do KPI;
+  // clicar de novo no card ativo limpa o filtro. Só um KPI por vez (não
+  // combina com os outros 3), mas soma-se aos filtros de coluna/omnibox.
+  var kpiFiltroAtivo = null;
+  var KPI_DEFS = {
+    ativos: {label:"Ativos agora", color:"var(--ok-500)", sub:"em processamento",
+      pred:function(e){return e.statusTemporal==="Ativo";}},
+    vencendo: {label:"Vencendo em 24h", color:"var(--warn-500)", sub:"exigem atenção",
+      pred:function(e){return e.nivelRisco==="Amarelo" && e.statusTemporal==="Ativo";}},
+    travados: {label:"Travados / vencidos", color:"var(--crit-500)", sub:"exigem ação imediata",
+      pred:function(e){return e.nivelRisco==="Vermelho" && e.statusTemporal==="Ativo";}},
+    voluntarios: {label:"Voluntários abertos", color:"var(--steel-400)", sub:"subscrições e ofertas",
+      pred:function(e){return e.categoria==="Voluntario" && e.statusTemporal!=="Encerrado" && e.statusTemporal!=="Cancelado";}},
+  };
+  var KPI_ORDEM = ["ativos","vencendo","travados","voluntarios"];
   function renderKpis(){
-    var ativos = eventos.filter(function(e){return e.statusTemporal==="Ativo";}).length;
-    var vencendo = eventos.filter(function(e){return e.nivelRisco==="Amarelo" && e.statusTemporal==="Ativo";}).length;
-    var travados = eventos.filter(function(e){return e.nivelRisco==="Vermelho" && e.statusTemporal==="Ativo";}).length;
-    var voluntarios = eventos.filter(function(e){return e.categoria==="Voluntario" && e.statusTemporal!=="Encerrado" && e.statusTemporal!=="Cancelado";}).length;
-    document.getElementById("kpiRow").innerHTML =
-      kpiCard("Ativos agora","var(--ok-500)",ativos,"em processamento")
-      + kpiCard("Vencendo em 24h","var(--warn-500)",vencendo,"exigem atenção")
-      + kpiCard("Travados / vencidos","var(--crit-500)",travados,"exigem ação imediata")
-      + kpiCard("Voluntários abertos","var(--steel-400)",voluntarios,"subscrições e ofertas");
+    document.getElementById("kpiRow").innerHTML = KPI_ORDEM.map(function(key){
+      var def = KPI_DEFS[key];
+      var count = eventos.filter(def.pred).length;
+      return kpiCard(key, def, count);
+    }).join("");
+    Array.prototype.forEach.call(document.querySelectorAll(".kpi-card"), function(card){
+      card.addEventListener("click", function(){
+        var key = card.getAttribute("data-kpi");
+        kpiFiltroAtivo = (kpiFiltroAtivo === key) ? null : key;
+        renderKpis();
+        renderKpiFilterTag();
+        switchView("dashboard");
+        renderTable();
+      });
+    });
   }
-  function kpiCard(label,color,value,sub){
-    return '<div class="kpi-card"><div class="kpi-left"><div class="kpi-label"><span class="kpi-dot" style="background:'+color+'"></span>'+label+'</div>'
-      +'<div class="kpi-sub">'+sub+'</div></div><div class="kpi-value">'+value+'</div></div>';
+  function kpiCard(key, def, count){
+    var active = kpiFiltroAtivo === key;
+    return '<div class="kpi-card'+(active?" active":"")+'" data-kpi="'+key+'"><div class="kpi-left"><div class="kpi-label"><span class="kpi-dot" style="background:'+def.color+'"></span>'+def.label+'</div>'
+      +'<div class="kpi-sub">'+def.sub+'</div></div><div class="kpi-value">'+count+'</div></div>';
+  }
+  function renderKpiFilterTag(){
+    var el = document.getElementById("kpiFilterTag");
+    if(!kpiFiltroAtivo){ el.innerHTML = ""; return; }
+    el.innerHTML = '<span class="filter-tag">Filtro: '+KPI_DEFS[kpiFiltroAtivo].label+'<button type="button" id="btnLimparKpiFiltro" title="Limpar filtro">✕</button></span>';
+    document.getElementById("btnLimparKpiFiltro").addEventListener("click", function(){
+      kpiFiltroAtivo = null;
+      renderKpis();
+      renderKpiFilterTag();
+      renderTable();
+    });
   }
 
   // ---------- notificações ----------
+  // Hoje o sino cobre 2 tipos de alerta, cada um com sua seção no painel:
+  //  1) Risco de prazo — eventos Ativos com nivelRisco Amarelo (vence em ate
+  //     1 dia) ou Vermelho (prazo ja vencido). Existia desde o inicio.
+  //  2) Comunicação pendente (novo) — eventos cujo StatusComunicacao na
+  //     planilha esta exatamente como "Pendente". Coluna vazia/nula NAO gera
+  //     alerta (so "Pendente" explicito conta) — pedido explicito, pra nao
+  //     tratar "ainda nao preenchido" igual a "aguardando comunicar".
   function renderNotifs(){
     var criticos = eventos.filter(function(e){ return (e.nivelRisco==="Vermelho"||e.nivelRisco==="Amarelo") && e.statusTemporal==="Ativo"; });
+    var pendentesComunicacao = eventos.filter(function(e){
+      return (e.statusComunicacao||"").trim().toLowerCase() === "pendente";
+    });
+    var total = criticos.length + pendentesComunicacao.length;
     var badge = document.getElementById("bellBadge");
-    if(criticos.length){ badge.style.display="flex"; badge.textContent = criticos.length; } else { badge.style.display="none"; }
-    document.getElementById("notifCount").textContent = criticos.length + " evento" + (criticos.length===1?"":"s");
+    if(total){ badge.style.display="flex"; badge.textContent = total; } else { badge.style.display="none"; }
+    document.getElementById("notifCount").textContent = total + " evento" + (total===1?"":"s");
     var list = document.getElementById("notifList");
-    if(!criticos.length){ list.innerHTML = '<div class="notif-empty">Nenhuma pendência crítica agora.</div>'; return; }
-    list.innerHTML = criticos.map(function(e){
-      var cor = e.nivelRisco==="Vermelho" ? "var(--crit-500)" : "var(--warn-500)";
-      var txt = e.nivelRisco==="Vermelho" ? "Prazo vencido — priorizar" : "Vence em breve";
-      return '<div class="notif-item" data-id="'+e.id+'"><div class="notif-dot" style="background:'+cor+'"></div>'
-        +'<div class="notif-txt"><b>'+e.ticker+' · '+e.tipoEvento+'</b><small>'+txt+'</small></div></div>';
-    }).join("");
+    if(!total){ list.innerHTML = '<div class="notif-empty">Nenhuma pendência agora.</div>'; return; }
+    var html = "";
+    if(criticos.length){
+      html += '<div class="notif-section-label">Risco de prazo</div>';
+      html += criticos.map(function(e){
+        var cor = e.nivelRisco==="Vermelho" ? "var(--crit-500)" : "var(--warn-500)";
+        var txt = e.nivelRisco==="Vermelho" ? "Prazo vencido — priorizar" : "Vence em breve";
+        return '<div class="notif-item" data-id="'+e.id+'"><div class="notif-dot" style="background:'+cor+'"></div>'
+          +'<div class="notif-txt"><b>'+e.ticker+' · '+e.tipoEvento+'</b><small>'+txt+'</small></div></div>';
+      }).join("");
+    }
+    if(pendentesComunicacao.length){
+      html += '<div class="notif-section-label">Comunicação pendente</div>';
+      html += pendentesComunicacao.map(function(e){
+        return '<div class="notif-item" data-id="'+e.id+'"><div class="notif-dot" style="background:var(--steel-400)"></div>'
+          +'<div class="notif-txt"><b>'+e.ticker+' · '+e.tipoEvento+'</b><small>Comunicação ao cliente pendente</small></div></div>';
+      }).join("");
+    }
+    list.innerHTML = html;
     Array.prototype.forEach.call(list.querySelectorAll(".notif-item"), function(el){
       el.addEventListener("click", function(){
         switchView("dashboard");
@@ -1079,6 +1221,100 @@ const SagecAPI = (function () {
       });
     });
   }
+
+  // ---------- calendário ----------
+  // Categoriza cada evento em ate 4 "datas de interesse" por dia — as mesmas
+  // datas usadas na timeline do detalhe: Data Com, Data Ex (sempre o dia
+  // seguinte a Data Com, mesma regra do timelineHtml), Encerramento/prazo
+  // final (DataLimiteFinal) e Pagamento/liquidação (DataPagamento). Um mesmo
+  // evento pode aparecer em mais de uma categoria/dia (normal: Com num dia,
+  // Pagamento em outro).
+  function categoriasDoDia(iso){
+    var cats = {com:[], ex:[], limite:[], pagamento:[]};
+    eventos.forEach(function(e){
+      if(e.dataCom === iso) cats.com.push(e);
+      if(e.dataCom && addDias(e.dataCom,1) === iso) cats.ex.push(e);
+      if(e.dataLimiteFinal === iso) cats.limite.push(e);
+      if(e.dataPagamento === iso) cats.pagamento.push(e);
+    });
+    return cats;
+  }
+  function renderCalendario(){
+    var first = new Date(calViewYear, calViewMonth, 1);
+    var gridStart = new Date(calViewYear, calViewMonth, 1 - first.getDay());
+    var hojeIso = isoDate(TODAY);
+    var cellsHtml = "";
+    for(var i=0;i<42;i++){
+      var d = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate()+i);
+      var iso = isoDate(d);
+      var otherMonth = d.getMonth() !== calViewMonth;
+      var cats = categoriasDoDia(iso);
+      var badges = "";
+      if(cats.com.length) badges += '<span class="cal-badge" style="background:var(--steel-400)" title="Data Com"></span>';
+      if(cats.ex.length) badges += '<span class="cal-badge" style="background:var(--gold-500)" title="Data Ex"></span>';
+      if(cats.limite.length) badges += '<span class="cal-badge" style="background:var(--warn-500)" title="Encerramento / prazo final"></span>';
+      if(cats.pagamento.length) badges += '<span class="cal-badge" style="background:var(--ok-500)" title="Pagamento / liquidação"></span>';
+      cellsHtml += '<div class="calendar-day'+(otherMonth?" other-month":"")+(iso===hojeIso?" today":"")+(iso===calSelectedIso?" selected":"")+'" data-iso="'+iso+'">'
+        +'<div class="cal-day-num">'+d.getDate()+'</div>'
+        +'<div class="cal-day-badges">'+badges+'</div>'
+      +'</div>';
+    }
+    document.getElementById("calGrid").innerHTML = cellsHtml;
+    document.getElementById("calMesLabel").textContent = MESES_PT[calViewMonth]+" de "+calViewYear;
+    Array.prototype.forEach.call(document.querySelectorAll(".calendar-day"), function(el){
+      el.addEventListener("click", function(){
+        calSelectedIso = el.getAttribute("data-iso");
+        renderCalendario();
+      });
+    });
+    renderCalDiaPanel();
+  }
+  function renderCalDiaPanel(){
+    var iso = calSelectedIso;
+    var cats = categoriasDoDia(iso);
+    var d = new Date(iso+"T00:00:00");
+    var labelData = String(d.getDate()).padStart(2,"0")+" de "+MESES_PT[d.getMonth()].toLowerCase()+" de "+d.getFullYear();
+    document.getElementById("calDiaLabel").textContent = iso===isoDate(TODAY) ? "Hoje · "+labelData : labelData;
+    var total = cats.com.length+cats.ex.length+cats.limite.length+cats.pagamento.length;
+    document.getElementById("calDiaCount").textContent = total + " evento" + (total===1?"":"s");
+    var grupos = [
+      {label:"Data Com", cor:"var(--steel-400)", lista:cats.com},
+      {label:"Data Ex", cor:"var(--gold-500)", lista:cats.ex},
+      {label:"Encerramento / prazo final", cor:"var(--warn-500)", lista:cats.limite},
+      {label:"Pagamento / liquidação", cor:"var(--ok-500)", lista:cats.pagamento},
+    ];
+    var html = "";
+    grupos.forEach(function(g){
+      if(!g.lista.length) return;
+      html += '<div class="cal-day-group-label"><span class="cal-dot" style="background:'+g.cor+'"></span>'+g.label+' ('+g.lista.length+')</div>';
+      html += g.lista.map(function(e){
+        return '<div class="cal-event-item" data-id="'+e.id+'"><div><div class="ticker">'+e.ticker+'</div><div class="empresa">'+e.tipoEvento+' · '+e.empresa+'</div></div>'+etapaPill(e.etapaProcesso)+'</div>';
+      }).join("");
+    });
+    document.getElementById("calDiaBody").innerHTML = html || '<div class="cal-event-empty">Nenhum evento neste dia.</div>';
+    Array.prototype.forEach.call(document.querySelectorAll(".cal-event-item"), function(el){
+      el.addEventListener("click", function(){
+        switchView("dashboard");
+        document.getElementById("omni").value = "";
+        selectEvento(parseInt(el.getAttribute("data-id"),10));
+        var row = document.querySelector('tr[data-id="'+el.getAttribute("data-id")+'"]');
+        if(row) row.scrollIntoView({block:"center"});
+      });
+    });
+  }
+  document.getElementById("calBtnPrev").addEventListener("click", function(){
+    calViewMonth--; if(calViewMonth<0){ calViewMonth=11; calViewYear--; }
+    renderCalendario();
+  });
+  document.getElementById("calBtnNext").addEventListener("click", function(){
+    calViewMonth++; if(calViewMonth>11){ calViewMonth=0; calViewYear++; }
+    renderCalendario();
+  });
+  document.getElementById("calBtnHoje").addEventListener("click", function(){
+    calViewMonth = TODAY.getMonth(); calViewYear = TODAY.getFullYear();
+    calSelectedIso = isoDate(TODAY);
+    renderCalendario();
+  });
 
   // ---------- tabela: filtro, ordenação, colunas ----------
   var columnFilters = {};
@@ -1131,7 +1367,7 @@ const SagecAPI = (function () {
   }
   function precoCellHtml(e){
     if(e.precoEvento==null) return '<span class="tabular" style="color:var(--ink-400)">—</span>';
-    var txt = '<span class="tabular">R$ '+e.precoEvento.toFixed(2)+'</span>';
+    var txt = '<span class="tabular">'+fmtBRL(e.precoEvento)+'</span>';
     if(e.precoMercado==null || e.favorabilidade==="-") return txt;
     if(e.favorabilidade==="Favoravel") return txt+' <span class="fav-down" title="Preço do evento abaixo da cotação de mercado">▼</span>';
     if(e.favorabilidade==="Desfavoravel") return txt+' <span class="fav-up" title="Preço do evento acima da cotação de mercado">▲</span>';
@@ -1145,6 +1381,7 @@ const SagecAPI = (function () {
   function linhasFiltradas(){
     var filtro = document.getElementById("omni").value.trim().toLowerCase();
     var rows = eventos.filter(function(e){
+      if(kpiFiltroAtivo && !KPI_DEFS[kpiFiltroAtivo].pred(e)) return false;
       for(var k in columnFilters){ if(!matchColumnFilter(e, k, columnFilters[k])) return false; }
       if(!filtro) return true;
       var hay = (e.ticker+" "+e.empresa+" "+e.tipoEvento+" "+e.categoria+" "+(e.ativoDireito||"")+" "+(e.ativoResultado||"")).toLowerCase();
@@ -1175,7 +1412,7 @@ const SagecAPI = (function () {
       return '<tr data-id="'+e.id+'" class="'+(selectedId===e.id?"selected":"")+'">'
         +'<td><div class="ticker">'+e.ticker+'</div><div class="empresa">'+e.empresa+'</div></td>'
         +'<td>'+e.tipoEvento+'</td>'
-        +'<td>'+(e.fatorProporcao||"—")+'</td>'
+        +'<td>'+fatorCellDisplay(e.fatorProporcao)+'</td>'
         +'<td class="tabular">'+fmtDate(e.dataCom)+'</td>'
         +'<td>'+statusPill(e.statusTemporal)+'</td>'
         +'<td>'+precoCellHtml(e)+'</td>'
@@ -1261,7 +1498,7 @@ const SagecAPI = (function () {
   }
 
   function cardText(ev){
-    var lines = [ev.ticker+" — "+ev.tipoEvento,"Empresa: "+ev.empresa,"Fator: "+ev.fatorProporcao,"Preço: "+fmtBRL(ev.precoEvento),
+    var lines = [ev.ticker+" — "+ev.tipoEvento,"Empresa: "+ev.empresa,"Fator: "+fatorCellDisplay(ev.fatorProporcao),"Preço: "+fmtBRL(ev.precoEvento),
       "Data Com: "+fmtDate(ev.dataCom),"Prazo final: "+fmtDate(ev.dataLimiteFinal)+(ev.diasRestantes!=null && ev.diasRestantes>=0 ? " ("+ev.diasRestantes+" dia(s))" : ""),
       "Data de liquidação: "+fmtDate(ev.dataPagamento)];
     if(ev.observacoes) lines.push("Observação: "+ev.observacoes);
@@ -1272,7 +1509,7 @@ const SagecAPI = (function () {
     return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   }
   function cardHtml(ev){
-    var lines = [escHtml(ev.ticker)+" — "+escHtml(ev.tipoEvento),"Empresa: "+escHtml(ev.empresa),"Fator: "+escHtml(ev.fatorProporcao),"Preço: "+escHtml(fmtBRL(ev.precoEvento)),
+    var lines = [escHtml(ev.ticker)+" — "+escHtml(ev.tipoEvento),"Empresa: "+escHtml(ev.empresa),"Fator: "+escHtml(fatorCellDisplay(ev.fatorProporcao)),"Preço: "+escHtml(fmtBRL(ev.precoEvento)),
       "Data Com: "+escHtml(fmtDate(ev.dataCom)),"Prazo final: "+escHtml(fmtDate(ev.dataLimiteFinal))+(ev.diasRestantes!=null && ev.diasRestantes>=0 ? " ("+ev.diasRestantes+" dia(s))" : ""),
       "Data de liquidação: "+escHtml(fmtDate(ev.dataPagamento))];
     if(ev.observacoes) lines.push("Observação: "+escHtml(ev.observacoes));
@@ -1346,7 +1583,7 @@ const SagecAPI = (function () {
     var linkBaseClientesHtml = "";
     if((ev.etapaProcesso==="Processamento" || ev.etapaProcesso==="Concluido") && ev.linkBaseClientes){
       linkBaseClientesHtml = '<div class="sim-box"><div class="sim-title">📊 Base de clientes / relatório final</div>'
-        +'<a class="doc-link" href="'+ev.linkBaseClientes+'" target="_blank" rel="noopener noreferrer">Abrir planilha no SharePoint ↗</a></div>';
+        +'<a class="doc-link" href="'+ev.linkBaseClientes+'" target="_blank" rel="noopener noreferrer">Acessar bases no SharePoint ↗</a></div>';
     }
 
     var faqHtml = "";
@@ -1370,7 +1607,7 @@ const SagecAPI = (function () {
         +'<div><span>Ativo direito</span><b>'+(ev.ativoDireito || "-")+'</b></div>'
         +'<div><span>Ativo resultado</span><b>'+(ev.ativoResultado || "-")+'</b></div>'
         +'<div><span>Direito negociável?</span><b>'+simNaoLabel(ev.direitoNegociavel)+'</b></div>'
-        +'<div><span>Fator</span><b>'+ev.fatorProporcao+'</b></div>'
+        +'<div><span>Fator</span><b>'+fatorCellDisplay(ev.fatorProporcao)+'</b></div>'
         +'<div><span>'+basisLabel+'</span><b class="tabular">'+fmtDate(basisValue)+'</b></div>'
         +'<div><span>Preço do evento</span><b class="tabular">'+fmtBRL(ev.precoEvento)+'</b></div>'
         +'<div><span>Documento</span><b>'+(ev.documentoLink ? '<a class="doc-link" href="'+ev.documentoLink+'" target="_blank" rel="noopener noreferrer">Abrir ↗</a>' : "—")+'</b></div>'
@@ -1452,8 +1689,22 @@ const SagecAPI = (function () {
       var para = parseFloat(mRatio[2].replace(",", "."));
       return de > 0 ? para/de : null;
     }
-    if(/^-?\d+(?:[.,]\d+)?$/.test(s)) return parseFloat(s.replace(",", "."));
+    // numero puro, com ou sem notacao cientifica (ex: "0.05721967934" ou o
+    // "3.7012e-8" achado num evento real — sem o (?:[eE]...)? esse caso
+    // nao batia e o simulador ficava indisponivel pra esse evento)
+    if(/^-?\d+(?:[.,]\d+)?(?:[eE][+-]?\d+)?$/.test(s)) return parseFloat(s.replace(",", "."));
     return null;
+  }
+  // Mesma logica do parseFatorMultiplicador acima pra decidir "isso e um
+  // numero" (ratio "N:M" fica como esta, texto livre fica como esta) — usada
+  // so pra exibir o Fator com virgula na coluna da tabela quando a planilha
+  // tem um numero puro direto (nao uma proporcao nem um texto descritivo).
+  function fatorCellDisplay(fatorProporcao){
+    if(!fatorProporcao) return "—";
+    var s = String(fatorProporcao).trim();
+    if(/^\d+(?:[.,]\d+)?\s*:\s*\d+(?:[.,]\d+)?$/.test(s)) return s;
+    if(/^-?\d+(?:[.,]\d+)?(?:[eE][+-]?\d+)?$/.test(s)) return fmtNumBR(parseFloat(s.replace(",", ".")), 15);
+    return s;
   }
   function semFatorHtml(ev){
     return '<p style="font-size:12px;color:var(--ink-600);margin:8px 0 0;">O fator deste evento ("'+(ev.fatorProporcao||"—")+'") não está num formato que dá pra calcular automaticamente (use "N:M", ex: "10:1", ou um número). Ajuste o Fator/Proporção na planilha para ativar o simulador.</p>';
@@ -1471,8 +1722,8 @@ const SagecAPI = (function () {
     }
     el.innerHTML =
       '<div class="sim-row"><div class="sim-field"><label>Ações/cotas possuídas</label><input type="number" id="simQtd" value="1000" min="0"/></div>'
-      +'<div class="sim-field"><label>Fator do evento</label><div class="tabular" style="padding:8.5px 0;font-size:13px;font-weight:600;">'+ev.fatorProporcao+'</div></div></div>'
-      +'<p style="font-size:10.5px;color:var(--ink-600);margin:-6px 0 10px;">multiplicador ×'+mult+' ('+(mult*100).toFixed(4)+'%)</p>'
+      +'<div class="sim-field"><label>Fator do evento</label><div class="tabular" style="padding:8.5px 0;font-size:13px;font-weight:600;">'+fatorCellDisplay(ev.fatorProporcao)+'</div></div></div>'
+      +'<p style="font-size:10.5px;color:var(--ink-600);margin:-6px 0 10px;">multiplicador ×'+fmtNumBR(mult)+' ('+fmtNumBRFixo(mult*100,4)+'%)</p>'
       +'<div class="sim-result" id="simResult"></div>'
       +'<p style="font-size:10.5px;color:var(--ink-600);margin:8px 0 0;">⏱️ A cotação de mercado usada aqui pode estar atrasada (delay) em relação ao preço real de negociação.</p>';
     var recompute = function(){
@@ -1485,7 +1736,7 @@ const SagecAPI = (function () {
         '<div class="cell"><span>Novas ações/cotas</span><b>'+novas.toLocaleString('pt-BR')+'</b></div>'
         +'<div class="cell"><span>Custo total</span><b>'+fmtBRL(custo)+'</b></div>'
         +'<div class="'+economiaClass+'"><span>Economia vs. preço de tela</span><b>'+fmtBRL(economia)+'</b></div>'
-        +'<div class="cell"><span>Preço evento / mercado</span><b>'+(preco?"R$ "+preco.toFixed(2):"—")+' / '+(mercado?"R$ "+mercado.toFixed(2):"—")+'</b></div>';
+        +'<div class="cell"><span>Preço evento / mercado</span><b>'+(preco?fmtBRL(preco):"—")+' / '+(mercado?fmtBRL(mercado):"—")+'</b></div>';
     };
     document.getElementById("simQtd").addEventListener("input", recompute);
     recompute();
@@ -1499,7 +1750,7 @@ const SagecAPI = (function () {
     }
     el.innerHTML =
       '<p style="font-size:11px;color:var(--ink-600);margin:0 0 4px;">A B3 calcula por conta/carteira individualmente — não pela posição total agregada. Some as carteiras onde o cliente tem o ativo.</p>'
-      +'<p style="font-size:10.5px;color:var(--ink-600);margin:0 0 12px;">Fator do evento: <b>'+ev.fatorProporcao+'</b> (multiplicador ×'+mult+')</p>'
+      +'<p style="font-size:10.5px;color:var(--ink-600);margin:0 0 12px;">Fator do evento: <b>'+fatorCellDisplay(ev.fatorProporcao)+'</b> (multiplicador ×'+fmtNumBR(mult)+')</p>'
       +'<div id="carteiraList"></div>'
       +'<button type="button" class="ghost-btn" id="btnAddCarteira" style="margin:4px 0 12px;">+ Adicionar carteira</button>'
       +'<div id="posicaoResumo"></div>';
@@ -1541,7 +1792,7 @@ const SagecAPI = (function () {
         return '<div class="sim-result" style="grid-template-columns:1fr 1fr 1fr;margin-top:6px;">'
           +'<div class="cell"><span>'+l.nome+'</span><b>'+l.posicao.toLocaleString('pt-BR')+' un.</b></div>'
           +'<div class="cell"><span>Resultado</span><b>'+l.resultado.toLocaleString('pt-BR')+'</b></div>'
-          +'<div class="cell"><span>Fração</span><b>'+l.fracao.toFixed(3)+'</b></div>'
+          +'<div class="cell"><span>Fração</span><b>'+fmtNumBRFixo(l.fracao,3)+'</b></div>'
         +'</div>';
       }).join("");
 
@@ -1549,7 +1800,7 @@ const SagecAPI = (function () {
         linhasHtml
         + '<div class="sim-result" style="margin-top:10px;">'
           +'<div class="cell win"><span>Total por carteira (regra B3)</span><b>'+totalResultadoPorCarteira.toLocaleString('pt-BR')+'</b></div>'
-          +'<div class="cell"><span>Frações somadas</span><b>'+totalFracaoPorCarteira.toFixed(3)+'</b></div>'
+          +'<div class="cell"><span>Frações somadas</span><b>'+fmtNumBRFixo(totalFracaoPorCarteira,3)+'</b></div>'
         +'</div>'
         + (difere
             ? '<p style="font-size:11px;color:var(--crit-500);margin:8px 0 0;">⚠️ Se calculado sobre a posição agregada ('+totalPosicao.toLocaleString('pt-BR')+' un.), o resultado seria '+resultadoAgregado.toLocaleString('pt-BR')+' — diferente do cálculo por carteira. A B3 sempre calcula por carteira individualmente (Manual de Procedimentos Operacionais da Central Depositária).</p>'
@@ -1610,6 +1861,7 @@ const SagecAPI = (function () {
       eventos = data;
       renderFilterRow();
       renderKpis(); renderNotifs(); renderTable();
+      if(currentView==="calendario") renderCalendario();
       document.getElementById("lastUpdate").textContent = fmtUltimaAtualizacao(SagecAPI.ultimaAtualizacao());
       if(!selectedId && eventos.length) selectEvento(eventos[0].id);
       else if(selectedId) selectEvento(selectedId);
