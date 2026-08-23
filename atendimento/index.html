@@ -403,7 +403,7 @@
 
       <div id="viewCalendario" class="view-stack" style="display:none;">
         <div class="page-head">
-          <div><h1>Calendário de Eventos</h1><p>Data Com, Data Ex, encerramento de reservas e pagamento/liquidação — por dia</p></div>
+          <div><h1>Calendário de Eventos</h1></div>
         </div>
         <div class="workspace workspace-even">
           <div class="panel">
@@ -1513,7 +1513,7 @@ const SagecAPI = (function () {
 
   function cardText(ev){
     var lines = [ev.ticker+" — "+ev.tipoEvento,"Empresa: "+ev.empresa,"Fator: "+fatorCellDisplay(ev.fatorProporcao),"Preço: "+fmtBRL(ev.precoEvento),
-      "Data Com: "+fmtDate(ev.dataCom),"Prazo final: "+fmtDate(ev.dataLimiteFinal)+(ev.diasRestantes!=null && ev.diasRestantes>=0 ? " ("+ev.diasRestantes+" dia(s))" : ""),
+      "Data Com: "+fmtDate(ev.dataCom),"Prazo final: "+fmtDate(ev.dataLimiteFinal),
       "Data de liquidação: "+fmtDate(ev.dataPagamento)];
     if(ev.observacoes) lines.push("Observação: "+ev.observacoes);
     lines.push("Documento: "+(ev.documentoLink || "—"));
@@ -1524,7 +1524,7 @@ const SagecAPI = (function () {
   }
   function cardHtml(ev){
     var lines = [escHtml(ev.ticker)+" — "+escHtml(ev.tipoEvento),"Empresa: "+escHtml(ev.empresa),"Fator: "+escHtml(fatorCellDisplay(ev.fatorProporcao)),"Preço: "+escHtml(fmtBRL(ev.precoEvento)),
-      "Data Com: "+escHtml(fmtDate(ev.dataCom)),"Prazo final: "+escHtml(fmtDate(ev.dataLimiteFinal))+(ev.diasRestantes!=null && ev.diasRestantes>=0 ? " ("+ev.diasRestantes+" dia(s))" : ""),
+      "Data Com: "+escHtml(fmtDate(ev.dataCom)),"Prazo final: "+escHtml(fmtDate(ev.dataLimiteFinal)),
       "Data de liquidação: "+escHtml(fmtDate(ev.dataPagamento))];
     if(ev.observacoes) lines.push("Observação: "+escHtml(ev.observacoes));
     lines.push(ev.documentoLink ? '<a href="'+escHtml(ev.documentoLink)+'" target="_blank" rel="noopener noreferrer">Documento</a>' : "Documento: —");
@@ -1724,31 +1724,27 @@ const SagecAPI = (function () {
     return '<p style="font-size:12px;color:var(--ink-600);margin:8px 0 0;">O fator deste evento ("'+(ev.fatorProporcao||"—")+'") não está num formato que dá pra calcular automaticamente (use "N:M", ex: "10:1", ou um número). Ajuste o Fator/Proporção na planilha para ativar o simulador.</p>';
   }
 
+  // Simulador financeiro: quanto o cliente paga/recebe no evento, dado uma
+  // quantidade informada (reservada/possuída em custódia) — não depende mais
+  // do Fator/Proporção (isso e' exclusividade da calculadora de Posição/
+  // Direitos, na outra aba). So precisa do preço do evento cadastrado.
   function renderCompensacao(el, ev){
     if(ev.precoEvento == null){
       el.innerHTML = '<p style="font-size:12px;color:var(--ink-600);margin:8px 0 0;">Este evento não tem preço definido — use a calculadora de Posição/Direitos.</p>';
       return;
     }
-    var mult = parseFatorMultiplicador(ev.fatorProporcao);
-    if(mult == null){
-      el.innerHTML = semFatorHtml(ev);
-      return;
-    }
     el.innerHTML =
-      '<div class="sim-row"><div class="sim-field"><label>Ações/cotas possuídas</label><input type="number" id="simQtd" value="1000" min="0"/></div>'
-      +'<div class="sim-field"><label>Fator do evento</label><div class="tabular" style="padding:8.5px 0;font-size:13px;font-weight:600;">'+fatorCellDisplay(ev.fatorProporcao)+'</div></div></div>'
-      +'<p style="font-size:10.5px;color:var(--ink-600);margin:-6px 0 10px;">multiplicador ×'+fmtNumBR(mult)+' ('+fmtNumBRFixo(mult*100,4)+'%)</p>'
+      '<div class="sim-row"><div class="sim-field"><label>Quantidade</label><input type="number" id="simQtd" value="1000" min="0"/></div></div>'
       +'<div class="sim-result" id="simResult"></div>'
       +'<p style="font-size:10.5px;color:var(--ink-600);margin:8px 0 0;">⏱️ A cotação de mercado usada aqui pode estar atrasada (delay) em relação ao preço real de negociação.</p>';
     var recompute = function(){
       var qtd = parseFloat(document.getElementById("simQtd").value)||0;
-      var novas = Math.floor(qtd * mult);
       var preco = ev.precoEvento || 0, mercado = ev.precoMercado || 0;
-      var custo = novas*preco, economia = novas*(mercado-preco);
+      var valorTotal = qtd*preco, economia = qtd*(mercado-preco);
       var economiaClass = economia < 0 ? "cell lose" : "cell win";
       document.getElementById("simResult").innerHTML =
-        '<div class="cell"><span>Novas ações/cotas</span><b>'+novas.toLocaleString('pt-BR')+'</b></div>'
-        +'<div class="cell"><span>Custo total</span><b>'+fmtBRL(custo)+'</b></div>'
+        '<div class="cell"><span>Quantidade de Ações/cotas</span><b>'+qtd.toLocaleString('pt-BR')+'</b></div>'
+        +'<div class="cell"><span>Valor total</span><b>'+fmtBRL(valorTotal)+'</b></div>'
         +'<div class="'+economiaClass+'"><span>Economia vs. preço de tela</span><b>'+fmtBRL(economia)+'</b></div>'
         +'<div class="cell"><span>Preço evento / mercado</span><b>'+(preco?fmtBRL(preco):"—")+' / '+(mercado?fmtBRL(mercado):"—")+'</b></div>';
     };
