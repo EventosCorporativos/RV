@@ -15,6 +15,8 @@
     --warn-500:#C97A0A; --warn-bg:rgba(201,122,10,.14);
     --crit-500:#C23B3B; --crit-bg:rgba(194,59,59,.14);
     --void-500:#8A5FA8; --void-bg:rgba(138,95,168,.14);
+    --exyellow-500:#E0B400; --exyellow-bg:rgba(224,180,0,.16);
+    --encred-500:#E4572E; --encred-bg:rgba(228,87,46,.14);
     --border:rgba(20,33,58,.12);
     --chrome-bg:linear-gradient(175deg,#16304F 0%,#0B1F3A 60%,#0A1830 100%);
     --chrome-ink:#EAF0FA; --chrome-ink-dim:#9FB2CE; --chrome-border:rgba(255,255,255,.09);
@@ -286,9 +288,10 @@
   .cal-day-badges{display:flex;flex-wrap:wrap;gap:3px;align-content:flex-start;flex:1;}
   .cal-badge{width:7px;height:7px;border-radius:50%;flex:0 0 auto;}
   .cal-badge-more{font-size:9.5px;color:var(--ink-600);font-family:var(--font-data);}
-  .cal-day-group-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-600);display:flex;align-items:center;gap:6px;margin:14px 0 6px;}
+  .cal-day-body{padding:18px;}
+  .cal-day-group-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-600);display:flex;align-items:center;gap:6px;margin:12px 0 6px;}
   .cal-day-group-label:first-child{margin-top:0;}
-  .cal-event-item{padding:9px 11px;border:1px solid var(--border);border-radius:9px;cursor:pointer;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .cal-event-item{padding:8px 11px;border:1px solid var(--border);border-radius:9px;cursor:pointer;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
   .cal-event-item:hover{background:var(--paper-50);border-color:var(--gold-300);}
   .cal-event-item .ticker{font-size:12.5px;}
   .cal-event-empty{color:var(--ink-400);font-size:12px;text-align:center;padding:30px 14px;}
@@ -415,8 +418,8 @@
             <div style="padding:14px 16px;">
               <div class="cal-legend">
                 <span class="cal-legend-item"><span class="cal-dot" style="background:var(--steel-400)"></span>Data Com</span>
-                <span class="cal-legend-item"><span class="cal-dot" style="background:var(--gold-500)"></span>Data Ex</span>
-                <span class="cal-legend-item"><span class="cal-dot" style="background:var(--warn-500)"></span>Encerramento / prazo final</span>
+                <span class="cal-legend-item"><span class="cal-dot" style="background:var(--exyellow-500)"></span>Data Ex</span>
+                <span class="cal-legend-item"><span class="cal-dot" style="background:var(--encred-500)"></span>Encerramento / prazo final</span>
                 <span class="cal-legend-item"><span class="cal-dot" style="background:var(--ok-500)"></span>Pagamento / liquidação</span>
               </div>
               <div class="calendar-weekdays">
@@ -427,7 +430,7 @@
           </div>
           <div class="panel">
             <div class="panel-head"><h2 id="calDiaLabel">Hoje</h2><span class="count" id="calDiaCount">—</span></div>
-            <div class="detail-body" id="calDiaBody"></div>
+            <div class="cal-day-body" id="calDiaBody"></div>
           </div>
         </div>
       </div>
@@ -472,7 +475,7 @@
         <div class="sim-box"><div class="sim-title">📅 Datas e prazos da linha do tempo</div>
           <div class="conceito-termos">
             <div><b>Data Com</b> — último dia em que é preciso ter o ativo em carteira para ter direito ao evento. Quem vende até esse dia perde o direito; quem compra a partir do dia seguinte (Data Ex) já compra sem ele.</div>
-            <div><b>Data Ex</b> — primeiro dia em que o ativo é negociado "ex-direito", isto é, sem o benefício do evento; normalmente o dia seguinte à Data Com, quando o preço do ativo costuma ser ajustado no pregão.</div>
+            <div><b>Data Ex</b> — primeiro dia em que o ativo é negociado "ex-direito", isto é, sem o benefício do evento; o próximo dia útil após a Data Com (pula fim de semana), quando o preço do ativo costuma ser ajustado no pregão.</div>
             <div><b>Início das reservas</b> — data em que abre o prazo para o cliente se manifestar (exercer, reservar, aceitar) num evento voluntário.</div>
             <div><b>Fim / Encerramento das reservas</b> — último dia do prazo para o cliente se manifestar num evento voluntário; depois disso, o direito não exercido expira sem valor (salvo sobras, quando aplicável).</div>
             <div><b>Data de liquidação / atualização / pagamento</b> — data em que o novo ativo ou o valor financeiro do evento é efetivamente creditado na conta/custódia do cliente.</div>
@@ -1233,7 +1236,7 @@ const SagecAPI = (function () {
     var cats = {com:[], ex:[], limite:[], pagamento:[]};
     eventos.forEach(function(e){
       if(e.dataCom === iso) cats.com.push(e);
-      if(e.dataCom && addDias(e.dataCom,1) === iso) cats.ex.push(e);
+      if(e.dataCom && dataExDeComData(e.dataCom) === iso) cats.ex.push(e);
       if(e.dataLimiteFinal === iso) cats.limite.push(e);
       if(e.dataPagamento === iso) cats.pagamento.push(e);
     });
@@ -1251,8 +1254,8 @@ const SagecAPI = (function () {
       var cats = categoriasDoDia(iso);
       var badges = "";
       if(cats.com.length) badges += '<span class="cal-badge" style="background:var(--steel-400)" title="Data Com"></span>';
-      if(cats.ex.length) badges += '<span class="cal-badge" style="background:var(--gold-500)" title="Data Ex"></span>';
-      if(cats.limite.length) badges += '<span class="cal-badge" style="background:var(--warn-500)" title="Encerramento / prazo final"></span>';
+      if(cats.ex.length) badges += '<span class="cal-badge" style="background:var(--exyellow-500)" title="Data Ex"></span>';
+      if(cats.limite.length) badges += '<span class="cal-badge" style="background:var(--encred-500)" title="Encerramento / prazo final"></span>';
       if(cats.pagamento.length) badges += '<span class="cal-badge" style="background:var(--ok-500)" title="Pagamento / liquidação"></span>';
       cellsHtml += '<div class="calendar-day'+(otherMonth?" other-month":"")+(iso===hojeIso?" today":"")+(iso===calSelectedIso?" selected":"")+'" data-iso="'+iso+'">'
         +'<div class="cal-day-num">'+d.getDate()+'</div>'
@@ -1279,8 +1282,8 @@ const SagecAPI = (function () {
     document.getElementById("calDiaCount").textContent = total + " evento" + (total===1?"":"s");
     var grupos = [
       {label:"Data Com", cor:"var(--steel-400)", lista:cats.com},
-      {label:"Data Ex", cor:"var(--gold-500)", lista:cats.ex},
-      {label:"Encerramento / prazo final", cor:"var(--warn-500)", lista:cats.limite},
+      {label:"Data Ex", cor:"var(--exyellow-500)", lista:cats.ex},
+      {label:"Encerramento / prazo final", cor:"var(--encred-500)", lista:cats.limite},
       {label:"Pagamento / liquidação", cor:"var(--ok-500)", lista:cats.pagamento},
     ];
     var html = "";
@@ -1460,6 +1463,17 @@ const SagecAPI = (function () {
     d.setDate(d.getDate()+dias);
     return d.toISOString().slice(0,10);
   }
+  // Data Ex = D+1 ÚTIL da Data Com (pula sábado/domingo). Não há coluna
+  // "Data Ex" na planilha (nunca teve) nem calendário de feriados da B3
+  // disponível no painel — feriados no meio da semana ainda nao sao
+  // tratados, so fins de semana.
+  function dataExDeComData(dataComIso){
+    if(!dataComIso) return null;
+    var d = new Date(dataComIso+"T00:00:00");
+    d.setDate(d.getDate()+1);
+    while(d.getDay()===0 || d.getDay()===6){ d.setDate(d.getDate()+1); }
+    return d.toISOString().slice(0,10);
+  }
   function timelineHtml(ev){
     // paradas personalizadas por categoria — cada etapa mapeada 1:1 para uma
     // data real do evento; posicao visual de cada parada e sempre um
@@ -1467,7 +1481,7 @@ const SagecAPI = (function () {
     // devem ficar visualmente coladas)
     var stops = ev.categoria === "Involuntario" ? [
       {label:"Data Com", date: ev.dataCom},
-      {label:"Data Ex", date: addDias(ev.dataCom, 1)},
+      {label:"Data Ex", date: dataExDeComData(ev.dataCom)},
       {label:"Data de atualização", date: ev.dataPagamento},
     ] : [
       {label:"Data Com", date: ev.dataCom},
