@@ -71,7 +71,7 @@
   .app-shell.collapsed .sidebar{width:76px;}
   .brand{display:flex;align-items:center;gap:10px;padding:6px 8px 22px;white-space:nowrap;}
   .brand-mark{width:34px;height:34px;flex:0 0 auto;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;padding:4px;box-shadow:0 4px 14px -4px rgba(0,0,0,.45);overflow:hidden;}
-  .brand-mark img{width:100%;height:100%;object-fit:contain;display:block;}
+  .brand-mark{font-size:13px;font-weight:700;letter-spacing:.02em;color:#0B1F3A;}
   .brand-word{font-size:19px;font-weight:600;letter-spacing:.2px;color:var(--chrome-ink);}
   .brand-sub{font-size:10.5px;color:var(--chrome-ink-dim);letter-spacing:.06em;text-transform:uppercase;margin-top:-2px;}
   .app-shell.collapsed .brand-word,.app-shell.collapsed .brand-sub{display:none;}
@@ -297,14 +297,35 @@
   .cal-event-empty{color:var(--ink-400);font-size:12px;text-align:center;padding:30px 14px;}
   @media (max-width:1180px){.workspace,.workspace.workspace-even{grid-template-columns:1fr;} .kpi-row{grid-template-columns:repeat(2,1fr);} .form-row{grid-template-columns:1fr;}}
   @media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+
+  .login-screen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--paper-0);color:var(--ink-900);}
+  .login-card{width:min(100%,360px);display:flex;flex-direction:column;gap:12px;padding:30px;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--radius-l);box-shadow:var(--shadow-2);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));}
+  .login-mark{align-self:center;width:48px;height:48px;font-size:16px;}
+  .login-card h1{margin:4px 0 8px;text-align:center;font-size:22px;}
+  .login-card label{font-size:12px;font-weight:600;color:var(--ink-600);}
+  .login-card input{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:10px;background:var(--paper-50);color:var(--ink-900);font:14px var(--font-ui);}
+  .login-card .primary-btn{justify-content:center;margin-top:4px;}
+  .login-note{margin:-4px 0 0;text-align:center;color:var(--gold-300);font-size:11px;font-weight:600;}
+  .login-error{min-height:17px;margin:0;text-align:center;color:var(--crit-500);font-size:12px;}
+  #shell[hidden]{display:none;}
 </style>
 </head>
-<body>
+<body><div class="login-screen" id="loginScreen">
+  <form class="login-card" id="loginForm">
+    <div class="brand-mark login-mark" aria-label="RV">RV</div>
+    <h1>Painel de Eventos Corporativos</h1>
+    <label for="loginPassword">Senha</label>
+    <input id="loginPassword" type="password" autocomplete="current-password" required autofocus />
+    <button class="primary-btn" type="submit">Entrar</button>
+    <p class="login-note">Somente times internos</p>
+    <p class="login-error" id="loginError" role="alert" aria-live="polite"></p>
+  </form>
+</div>
 
-<div class="app-shell collapsed" id="shell">
+<div class="app-shell collapsed" id="shell" hidden>
   <aside class="sidebar" id="sidebar">
     <div class="brand">
-      <div class="brand-mark"><img src="data:image/png;base64,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" alt="XP"/></div>
+      <div class="brand-mark" aria-label="RV">RV</div>
       <div>
         <div class="brand-word">XP</div>
         <div class="brand-sub">Eventos Corporativos</div>
@@ -2036,6 +2057,24 @@ const SagecAPI = (function () {
   garantirIdentidade();
   applyRoleUI();
   carregarEventos();
+})();
+</script>
+<script>
+(function(){
+  var form = document.getElementById("loginForm");
+  var input = document.getElementById("loginPassword");
+  var error = document.getElementById("loginError");
+  form.addEventListener("submit", function(event){
+    event.preventDefault();
+    if(input.value === "XP123"){
+      document.getElementById("loginScreen").remove();
+      document.getElementById("shell").hidden = false;
+    }else{
+      error.textContent = "Senha incorreta. Tente novamente.";
+      input.value = "";
+      input.focus();
+    }
+  });
 })();
 </script>
 </body>
