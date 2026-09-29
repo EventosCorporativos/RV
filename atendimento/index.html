@@ -531,19 +531,14 @@
                 <div><b>Fato relevante</b> — comunicado oficial obrigatório que a empresa publica na CVM/B3 informando a mudança e o motivo.</div>
                 <div><b>Migração automática</b> — a troca do código na carteira do cliente acontece sozinha, sem nenhuma ação necessária.</div>
               </div></div>
-              <div class="sim-box"><div class="sim-title">Encerramento de BDR</div><p class="conceito-txt">Quando o banco depositário encerra um programa de BDR (recibo negociado na B3 que representa ações de uma empresa estrangeira), o cliente tem um prazo — normalmente 30 dias — para vender o BDR no mercado ou convertê-lo na ação original negociada no exterior. Quem não se manifestar a tempo tem a posição liquidada compulsoriamente, com o valor creditado em conta.</p><div class="conceito-termos">
-                <div><b>Programa patrocinado</b> — tipo de BDR mantido pela própria empresa estrangeira (via um banco depositário), diferente do BDR não patrocinado.</div>
-                <div><b>Agente/banco depositário</b> — instituição que emite e administra o BDR no Brasil, representando as ações negociadas no exterior.</div>
-                <div><b>Prazo de 30 dias</b> — janela típica que o titular tem para vender o BDR ou convertê-lo na ação original antes do encerramento compulsório.</div>
-              </div></div>
               <div class="sim-box"><div class="sim-title">Amortização</div><p class="conceito-txt">Devolução parcial do valor investido em um FII ou título antes do vencimento, decidida pela gestora/emissor, sem extinguir a cota — reduz o valor patrimonial por cota na mesma proporção do valor amortizado. É automática, creditada em conta na data de pagamento definida; o cliente não precisa se manifestar.</p><div class="conceito-termos">
                 <div><b>Valor patrimonial por cota</b> — o valor total do patrimônio do fundo dividido pelo número de cotas; cai na amortização na proporção do valor devolvido.</div>
                 <div><b>Amortização de cotas</b> — devolução parcial do capital investido, sem extinguir a cota (diferente do resgate, que extingue).</div>
                 <div><b>Data de pagamento</b> — data em que o valor amortizado é creditado na conta do cliente.</div>
               </div></div>
-              <div class="sim-box"><div class="sim-title">Resgate Geral</div><p class="conceito-txt">Encerramento (liquidação) total do fundo ou título, com devolução de todo o capital restante aos cotistas/investidores de uma só vez — geralmente ao final do prazo de duração do fundo, por decisão da assembleia de cotistas, ou por determinação regulatória. Também é automático: a posição é zerada e o valor é creditado na conta do cliente na data de liquidação.</p><div class="conceito-termos">
-                <div><b>Liquidação do fundo</b> — encerramento definitivo do fundo/título, com venda dos ativos e devolução de todo o capital aos cotistas.</div>
-                <div><b>Assembleia de cotistas</b> — reunião em que os cotistas podem votar decisões do fundo, incluindo sua liquidação antecipada.</div>
+              <div class="sim-box"><div class="sim-title">Resgate Geral</div><p class="conceito-txt">Encerramento ou liquidação total da posição do investidor em um ativo — como ações, cotas de fundos ou títulos — conforme as condições do evento. A posição é encerrada e o investidor recebe o valor ou ativo previsto na liquidação, na data informada. Isso pode ocorrer por decisão societária, vencimento ou determinação regulatória.</p><div class="conceito-termos">
+                <div><b>Liquidação do ativo ou da posição</b> — encerramento definitivo da posição, com entrega do valor ou ativo previsto aos investidores.</div>
+                <div><b>Assembleia de acionistas ou cotistas</b> — reunião que pode deliberar sobre a liquidação antecipada da companhia ou do fundo, conforme o caso.</div>
                 <div><b>Data de liquidação</b> — data em que o valor final é creditado e a posição do cliente é zerada.</div>
               </div></div>
             </div>
@@ -551,6 +546,11 @@
           <div class="panel">
             <div class="panel-head"><h2>Eventos voluntários</h2><span class="count">exigem manifestação do cliente</span></div>
             <div class="detail-body">
+              <div class="sim-box"><div class="sim-title">Encerramento de BDR</div><p class="conceito-txt">Quando o banco depositário encerra um programa de BDR (recibo negociado na B3 que representa ações de uma empresa estrangeira), o cliente tem um prazo — normalmente 30 dias — para vender o BDR no mercado ou convertê-lo na ação original negociada no exterior. Quem não se manifestar a tempo tem a posição liquidada compulsoriamente, com o valor creditado em conta.</p><div class="conceito-termos">
+                <div><b>Programa patrocinado</b> — tipo de BDR mantido pela própria empresa estrangeira (via um banco depositário), diferente do BDR não patrocinado.</div>
+                <div><b>Agente/banco depositário</b> — instituição que emite e administra o BDR no Brasil, representando as ações negociadas no exterior.</div>
+                <div><b>Prazo de 30 dias</b> — janela típica que o titular tem para vender o BDR ou convertê-lo na ação original antes do encerramento compulsório.</div>
+              </div></div>
               <div class="sim-box"><div class="sim-title">Subscrição</div><p class="conceito-txt">Direito de preferência do acionista de comprar ações novas emitidas num aumento de capital, na proporção da posição que já tem (Lei das S.A., art. 171) — geralmente a um preço de emissão abaixo do mercado, para não diluir sua participação. Dentro do prazo (mínimo 30 dias por lei), o cliente pode exercer e pagar, vender o direito em bolsa (se negociável) ou deixá-lo expirar sem valor.</p><div class="conceito-termos">
                 <div><b>Direito de subscrição</b> — o direito (código à parte, ex: "VALE1") que dá ao acionista a preferência de comprar as ações novas.</div>
                 <div><b>Preço de emissão</b> — o preço fixado para comprar cada ação nova na subscrição, normalmente abaixo do preço de mercado.</div>
@@ -1233,7 +1233,7 @@ const SagecAPI = (function () {
       html += '<div class="notif-section-label">Comunicação pendente</div>';
       html += pendentesComunicacao.map(function(e){
         return '<div class="notif-item" data-id="'+e.id+'"><div class="notif-dot" style="background:var(--steel-400)"></div>'
-          +'<div class="notif-txt"><b>'+e.ticker+' · '+e.tipoEvento+'</b><small>Comunicação ao cliente pendente</small></div></div>';
+          +'<div class="notif-txt"><b>'+e.ticker+' · '+e.tipoEvento+'</b><small>Comunicação ao cliente ou assessor pendente</small></div></div>';
       }).join("");
     }
     list.innerHTML = html;
@@ -1890,9 +1890,25 @@ const SagecAPI = (function () {
     return "Atualizado "+String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")
       +" - "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
   }
+  function normalizarUrlEvento(valor){
+    if(valor == null) return null;
+    var link = String(valor).trim();
+    link = link.replace(/(?:&amp;)?#x0*20;$/i, "").trim();
+    var markdown = link.match(/^\[([^\]]+)\]\((https?:\/\/[^)]+)\)$/i);
+    if(markdown) link = markdown[2].trim();
+    else if(/^<https?:\/\//i.test(link) && />$/.test(link)) link = link.slice(1, -1).trim();
+    return link || null;
+  }
+  function normalizarLinksEvento(ev){
+    return Object.assign({}, ev, {
+      documentoLink: normalizarUrlEvento(ev.documentoLink),
+      linkBaseClientes: normalizarUrlEvento(ev.linkBaseClientes),
+      linkManual: normalizarUrlEvento(ev.linkManual)
+    });
+  }
   function carregarEventos(){
     return SagecAPI.listar().then(function(data){
-      eventos = data;
+      eventos = data.map(normalizarLinksEvento);
       renderFilterRow();
       renderKpis(); renderNotifs(); renderTable();
       if(currentView==="calendario") renderCalendario();
