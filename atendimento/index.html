@@ -787,11 +787,14 @@ const SagecAPI = (function () {
     // Voluntario: o que importa e o encerramento da janela de reserva.
     const dataBase = ev.categoria === "Involuntario" ? dataPagamento : dataLimite;
     const diasRestantes = dataBase ? Math.round((dataBase - HOJE) / 86400000) : null;
+    const comunicacaoPendente = (ev.statusComunicacao || "").trim().toLowerCase() === "pendente";
+    const travadoComunicacao = comunicacaoPendente && diasRestantes !== null && diasRestantes <= 2 &&
+      statusTemporal !== "Encerrado" && statusTemporal !== "Cancelado";
 
     let nivelRisco = "-";
     if (statusTemporal !== "Encerrado" && statusTemporal !== "Cancelado") {
       if (diasRestantes === null) nivelRisco = "Verde";
-      else if (diasRestantes <= 0) nivelRisco = "Vermelho";
+      else if (diasRestantes <= 0 || travadoComunicacao) nivelRisco = "Vermelho";
       else if (diasRestantes <= 1) nivelRisco = "Amarelo";
       else nivelRisco = "Verde";
     }
@@ -811,7 +814,7 @@ const SagecAPI = (function () {
       dataAnuncio = d.toISOString().slice(0, 10);
     }
 
-    return Object.assign({}, ev, { dataAnuncio, statusTemporal, diasRestantes, nivelRisco, varVsMercado, favorabilidade });
+    return Object.assign({}, ev, { dataAnuncio, statusTemporal, diasRestantes, travadoComunicacao, nivelRisco, varVsMercado, favorabilidade });
   }
 
   const MOCK_EVENTOS = [
@@ -1158,7 +1161,7 @@ const SagecAPI = (function () {
     vencendo: {label:"Vencendo em 24h", color:"var(--warn-500)", sub:"exigem atenção",
       pred:function(e){return e.nivelRisco==="Amarelo" && e.statusTemporal==="Ativo";}},
     travados: {label:"Travados / vencidos", color:"var(--crit-500)", sub:"exigem ação imediata",
-      pred:function(e){return e.nivelRisco==="Vermelho" && e.statusTemporal==="Ativo";}},
+      pred:function(e){return e.statusTemporal==="Ativo" && e.nivelRisco==="Vermelho" || e.travadoComunicacao;}},
     voluntarios: {label:"Voluntários abertos", color:"var(--steel-400)", sub:"subscrições e ofertas",
       pred:function(e){return e.categoria==="Voluntario" && e.statusTemporal!=="Encerrado" && e.statusTemporal!=="Cancelado";}},
   };
